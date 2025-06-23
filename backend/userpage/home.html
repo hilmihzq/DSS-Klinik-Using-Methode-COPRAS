@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>SPKlinik - Belajar SPKlinik untuk Semua</title>
+   <meta name="description" content="Platform SPKlinik yang ramah untuk keluarga - orang tua, anak-anak, dan remaja. Belajar SPKlinik dengan mudah dan menyenangkan.">
+   
+   <!-- Google Fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+   <style>
+      * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+      }
+
+      body {
+         font-family: 'Poppins', sans-serif;
+         background-color: #ffffff;
+         color: #333333;
+         line-height: 1.6;
+         font-size: 16px;
+      }
+
+      /* Container */
+      .container {
+         max-width: 1100px;
+         margin: 0 auto;
+         padding: 0 20px;
+      }
+
+      /* Header */
+      header {
+         background: #ffffff;
+         padding: 15px 0;
+         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+         position: sticky;
+         top: 0;
+         z-index: 100;
+      }
+
+      nav {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .logo {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         font-size: 24px;
+         font-weight: 700;
+         color: #2563eb;
+         text-decoration: none;
+      }
+
+      .logo-icon {
+         width: 35px;
+         height: 35px;
+         background: #2563eb;
+         border-radius: 8px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: white;
+         font-weight: 700;
+         font-size: 18px;
+      }
+
+      .nav-menu {
+         display: flex;
+         list-style: none;
+         gap: 30px;
+         align-items: center;
+      }
+
+      .nav-menu a {
+         color: #333333;
+         text-decoration: none;
+         font-weight: 500;
+         padding: 8px 16px;
+         border-radius: 6px;
+         transition: all 0.3s ease;
+      }
+
+      .nav-menu a:hover {
+         background: #f3f4f6;
+         color: #2563eb;
+      }
+
+      .menu-toggle {
+         display: none;
+         flex-direction: column;
+         cursor: pointer;
+         gap: 4px;
+      }
+
+      .menu-toggle span {
+         width: 25px;
+         height: 3px;
+         background: #333333;
+         border-radius: 2px;
+         transition: 0.3s;
+      }
+
+      /* Hero Section */
+      .hero {
+         padding: 60px 0;
+         text-align: center;
+         background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      }
+
+      .hero h1 {
+         font-size: 48px;
+         font-weight: 700;
+         color: white;
+         margin-bottom: 20px;
+         line-height: 1.2;
+      }
+
+      .hero .highlight {
+         color: #2563eb;
+      }
+
+      .hero p {
+         font-size: 20px;
+         color: white;
+         max-width: 600px;
+         margin: 0 auto 40px;
+      }
+
+      .hero-buttons {
+         display: flex;
+         gap: 20px;
+         justify-content: center;
+         flex-wrap: wrap;
+      }
+
+      .btn {
+         padding: 12px 30px;
+         border-radius: 8px;
+         text-decoration: none;
+         font-weight: 600;
+         transition: all 0.3s ease;
+         border: 2px solid transparent;
+         cursor: pointer;
+         font-size: 16px;
+      }
+
+      .btn-primary {
+         background: #2563eb;
+         color: white;
+      }
+
+      .btn-primary:hover {
+         background: #1d4ed8;
+         transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+         background: white;
+         color: #2563eb;
+         border: 2px solid #2563eb;
+      }
+
+      .btn-secondary:hover {
+         background: #2563eb;
+         color: white;
+      }
+
+      /* Features Section */
+      .features {
+         padding: 80px 0;
+         background: white;
+      }
+
+      .section-title {
+         text-align: center;
+         font-size: 36px;
+         font-weight: 700;
+         color: #1e293b;
+         margin-bottom: 50px;
+      }
+
+      .features-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+         gap: 40px;
+         margin-top: 40px;
+      }
+
+      .feature-card {
+         background: white;
+         padding: 30px;
+         border-radius: 12px;
+         text-align: center;
+         border: 1px solid #e2e8f0;
+         transition: all 0.3s ease;
+      }
+
+      .feature-card:hover {
+         transform: translateY(-5px);
+         box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      }
+
+      .feature-icon {
+         width: 60px;
+         height: 60px;
+         background: #eff6ff;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         margin: 0 auto 20px;
+         font-size: 24px;
+         color: #2563eb;
+      }
+
+      .feature-card h3 {
+         font-size: 22px;
+         font-weight: 600;
+         color: #1e293b;
+         margin-bottom: 15px;
+      }
+
+      .feature-card p {
+         color: #64748b;
+         line-height: 1.6;
+      }
+
+      /* About Section */
+      .about {
+         padding: 50px 0;
+         background: #f8fafc;
+      }
+
+      .about-content {
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         gap: 60px;
+         align-items: center;
+      }
+
+      .about-text h2 {
+         font-size: 36px;
+         font-weight: 700;
+         color: #1e293b;
+         margin-bottom: 20px;
+      }
+
+      .about-text p {
+         color: #64748b;
+         font-size: 18px;
+         margin-bottom: 20px;
+         line-height: 1.7;
+      }
+
+      .about-image {
+   background-image: url('../image/maxresdefault.jpg'); /* Ganti dengan path gambar kamu */
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   height: 300px;
+   border-radius: 12px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: white; /* Agar teks terlihat jelas di atas gambar */
+   font-size: 18px;
+   position: relative;
+}
+
+
+
+
+      /* Team Section */
+      .team {
+         padding: 80px 0;
+         background: white;
+      }
+
+      .team-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+         gap: 30px;
+         margin-top: 50px;
+      }
+
+      .team-member {
+         background: white;
+         padding: 30px;
+         border-radius: 12px;
+         text-align: center;
+         border: 1px solid #e2e8f0;
+         transition: all 0.3s ease;
+      }
+
+      .team-member:hover {
+         transform: translateY(-3px);
+         box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      }
+
+.member-photo {
+   width: 100px;
+   height: 100px;
+   border-radius: 50%;
+   background: #eff6ff;
+   margin: 0 auto 20px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border: 3px solid #dbeafe;
+   overflow: hidden; /* penting agar gambar tidak keluar dari lingkaran */
+}
+
+.member-photo img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover; /* gambar menyesuaikan tanpa distorsi */
+   display: block;
+}
+
+
+      .member-name {
+         font-size: 20px;
+         font-weight: 600;
+         color: #1e293b;
+         margin-bottom: 5px;
+      }
+
+      .member-role {
+         color: #64748b;
+         font-size: 14px;
+         margin-bottom: 15px;
+      }
+
+      .member-contact {
+         display: flex;
+         justify-content: center;
+         gap: 10px;
+      }
+
+      .contact-btn {
+         width: 35px;
+         height: 35px;
+         border-radius: 6px;
+         background: #f1f5f9;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: #64748b;
+         text-decoration: none;
+         transition: all 0.3s ease;
+      }
+
+      .contact-btn:hover {
+         background: #2563eb;
+         color: white;
+      }
+
+      /* FAQ Section */
+      .faq {
+         padding: 80px 0;
+         background: #f8fafc;
+      }
+
+      .faq-container {
+         max-width: 700px;
+         margin: 0 auto;
+      }
+
+      .faq-item {
+         background: white;
+         border-radius: 8px;
+         margin-bottom: 15px;
+         border: 1px solid #e2e8f0;
+         overflow: hidden;
+      }
+
+      .faq-question {
+         width: 100%;
+         padding: 20px;
+         background: none;
+         border: none;
+         text-align: left;
+         font-size: 16px;
+         font-weight: 600;
+         color: #1e293b;
+         cursor: pointer;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         transition: all 0.3s ease;
+      }
+
+      .faq-question:hover {
+         background: #f8fafc;
+      }
+
+      .faq-answer {
+         padding: 0 20px;
+         max-height: 0;
+         overflow: hidden;
+         transition: all 0.3s ease;
+      }
+
+      .faq-answer.active {
+         padding: 20px;
+         max-height: 200px;
+      }
+
+      .faq-answer p {
+         color: #64748b;
+         line-height: 1.6;
+      }
+
+      .faq-icon {
+         transition: transform 0.3s ease;
+         color: #2563eb;
+      }
+
+      .faq-icon.rotate {
+         transform: rotate(180deg);
+      }
+
+      /* Footer */
+      footer {
+         background: white;
+         padding: 40px 0;
+         border-top: 1px solid #e2e8f0;
+         text-align: center;
+      }
+
+      footer p {
+         color: #64748b;
+         margin-bottom: 10px;
+      }
+
+      footer a {
+         color: #2563eb;
+         text-decoration: none;
+      }
+
+      footer a:hover {
+         text-decoration: underline;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+         .nav-menu {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            background: white;
+            flex-direction: column;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+         }
+
+         .nav-menu.active {
+            left: 0;
+         }
+
+         .menu-toggle {
+            display: flex;
+         }
+
+         .hero h1 {
+            font-size: 36px;
+         }
+
+         .hero p {
+            font-size: 18px;
+         }
+
+         .about-content {
+            grid-template-columns: 1fr;
+            gap: 40px;
+         }
+
+         .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+         }
+
+         .section-title {
+            font-size: 28px;
+         }
+      }
+   </style>
+</head>
+
+<body>
+   <!-- Header -->
+   <header>
+      <div class="container">
+         <nav>
+            <a href="#" class="logo">
+               
+               SPKlinik
+            </a>
+            <ul class="nav-menu">
+               <li><a href="#beranda">Beranda</a></li>
+               <li><a href="#tentang">Tentang</a></li>
+               <li><a href="#tim">Tim</a></li>
+               <li><a href="#faq">FAQ</a></li>
+               <li><a href="how-to-use.html">How To Use</a></li>
+            </ul>
+            <div class="menu-toggle">
+               <span></span>
+               <span></span>
+               <span></span>
+            </div>
+         </nav>
+      </div>
+   </header>
+
+   <!-- Hero Section -->
+<section class="hero" id="beranda" style="
+   background-image: url('../image/Klinik\ Lengg_Drohnenaufnahme\ 3_web-1600x1066.jpg');
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+   padding: 200px 0;
+   color: white;
+   text-align: center;
+   position: relative;
+">
+   <div style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+   "></div>
+   <div class="container" style="position: relative; z-index: 2;">
+      <h1>Form <span class="highlight">Kesehatan</span> untuk Semua</h1>
+      <p>Platform Kesehatan untuk kebutuhan bersama, dan membuat Indonesia menjadi sehat dan nyaman</p>
+      <div class="hero-buttons">
+         <a href="pilihKriteria.html" class="btn btn-primary">Mulai Memilih</a>
+         <a href="how-to-use.html" class="btn btn-secondary">Pelajari Lebih Lanjut</a>
+      </div>
+   </div>
+</section>
+
+   <!-- Features Section -->
+   <section class="features">
+      <div class="container">
+         <h2 class="section-title">Kenapa Memilih <span style="color: #2563eb;">SPKlinik</span>?</h2>
+         <div class="features-grid">
+            <div class="feature-card">
+               <div class="feature-icon">👨‍👩‍👧‍👦</div>
+               <h3>Ramah Keluarga</h3>
+               <p>Dirancang khusus untuk semua anggota keluarga dengan bahasa yang mudah dipahami dan antarmuka yang sederhana.</p>
+            </div>
+            <div class="feature-card">
+               <div class="feature-icon">📚</div>
+               <h3>Panduan Lengkap</h3>
+               <p>Website ini menyediakan How to Use web ini dimana kalian bisa melihat perhitungan menggunakan metode copras untuk menentukan qi(ranking)</p>
+            </div>
+            <div class="feature-card">
+               <div class="feature-icon">🛡️</div>
+               <h3>Aman & Terpercaya</h3>
+               <p>Keamanan data dan privasi keluarga adalah prioritas utama kami dengan teknologi enkripsi terdepan.</p>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- About Section -->
+   <section class="about" id="tentang">
+      <div class="container">
+         <div class="about-content">
+            <div class="about-text">
+               <h2>Sistem Pendukung Keputusan Pemilihan Rekomendasi Klinik</h2>
+               <p>HealthRank merupakan sistem pendukung keputusan yang dirancang untuk membantu pengguna dalam memilih klinik terbaik secara objektif. Dengan menerapkan metode COPRAS (Complex Proportional Assessment), sistem ini mengevaluasi berbagai kriteria penting seperti biaya layanan, fasilitas, lokasi, reputasi, dan ketersediaan pelayanan.</p>
+               <p>Tujuan utama dari platform ini adalah memberikan rekomendasi klinik yang sesuai dengan kebutuhan dan preferensi pengguna, sehingga keputusan yang diambil menjadi lebih tepat dan terarah.</p>
+               <a href="#" class="btn btn-primary">Jelajahi Fitur</a>
+            </div>
+            <div class="about-image">
+               <span>SPKlinik</span>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- Team Section -->
+   <section class="team" id="tim">
+      <div class="container">
+         <h2 class="section-title">Tim <span style="color: #2563eb;">SPKlinik</span></h2>
+
+         <p style="text-align: center; color: #64748b; margin-bottom: 20px;">
+            Mahasiswa Politeknik Negeri Jakarta, Kelas TI CCIT 4A<br>
+            Dibimbing oleh Ibu Iklima Erlin, S.Kom., M.T.I
+         </p>
+         
+         <div class="team-grid">
+            <div class="team-member">
+               <div class="member-photo" style="background-image: url('../image/WhatsApp\ Image\ 2024-11-11\ at\ 11.32.54_f33a47f7.jpg');"></div>
+               <div class="member-name">Hilmi Haziq</div>
+               <div class="member-role">NIM: 2307312018</div>
+               <div class="member-contact">
+                  <a href="#" class="contact-btn" title="Email">✉</a>
+                  <a href="#" class="contact-btn" title="GitHub">⚡</a>
+               </div>
+            </div>
+            
+            <div class="team-member">
+               <div class="member-photo" style="background-image: url('../image/WhatsApp\ Image\ 2025-06-15\ at\ 16.47.55_99fdf4ea\ \(1\).jpg');"></div>
+               <div class="member-name">Nalendra Regina Khanza</div>
+               <div class="member-role">NIM: 2307412011</div>
+               <div class="member-contact">
+                  <a href="#" class="contact-btn" title="Email">✉</a>
+                  <a href="#" class="contact-btn" title="GitHub">⚡</a>
+               </div>
+            </div>
+            
+            <div class="team-member">
+               <div class="member-photo" style="background-image: url('../image/WhatsApp\ Image\ 2025-06-15\ at\ 15.23.08_96282dbd\ \(1\).jpg');"></div>
+               <div class="member-name">Raflyalif Adzani Pahlevi</div>
+               <div class="member-role">NIM:  2307412021</div>
+               <div class="member-contact">
+                  <a href="#" class="contact-btn" title="Email">✉</a>
+                  <a href="#" class="contact-btn" title="GitHub">⚡</a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- FAQ Section -->
+   <section class="faq" id="faq">
+      <div class="container">
+         <h2 class="section-title">Pertanyaan yang Sering Ditanyakan</h2>
+         
+         <div class="faq-container">
+            <div class="faq-item">
+               <button class="faq-question" onclick="toggleFAQ(this)">
+                  Apa itu SPKlinik?
+                  <span class="faq-icon">▼</span>
+               </button>
+               <div class="faq-answer">
+                  <p>SPKlinik adalah platform sistem pendukung keputusan (SPK) yang dirancang untuk membantu masyarakat dalam memilih klinik terbaik sesuai kebutuhan. Menggunakan metode COPRAS, SPKlinik menilai dan membandingkan berbagai klinik berdasarkan kriteria seperti biaya, fasilitas, lokasi, dan kualitas pelayanan.</p>
+               </div>
+            </div>
+
+            <div class="faq-item">
+               <button class="faq-question" onclick="toggleFAQ(this)">
+                  Apakah cocok untuk Keluarga?
+                  <span class="faq-icon">▼</span>
+               </button>
+               <div class="faq-answer">
+                  <p>Tentu saja! SPKlinik sangat cocok digunakan oleh keluarga yang ingin mendapatkan layanan kesehatan terbaik. Dengan mempertimbangkan berbagai kriteria seperti biaya, jarak, fasilitas, dan reputasi klinik, SPKlinik membantu orang tua dalam memilih klinik yang aman, nyaman, dan sesuai kebutuhan seluruh anggota keluarga — mulai dari anak-anak hingga lansia.</p>
+               </div>
+            </div>
+
+            <div class="faq-item">
+               <button class="faq-question" onclick="toggleFAQ(this)">
+                  Bagaimana cara memulai?
+                  <span class="faq-icon">▼</span>
+               </button>
+               <div class="faq-answer">
+                  <p>Anda dapat memulai dengan mengklik tombol "Mulai Memilih" dan mengikuti panduan interaktif yang akan membantu Anda memahami melalui Halaman "Pelajari Lebih Lanjut" dan memberikan rekomendasi klinik yang sesuai.</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <!-- Footer -->
+   <footer>
+      <div class="container">
+         <p>&copy; 2025 <a href="../frontend-Admin/login.html">SPKlinik</a>. Hak Cipta Dilindungi Healme.</p>
+         <p>Dibuat dengan ❤️ untuk keluarga Indonesia</p>
+      </div>
+   </footer>
+
+   <script>
+      // Mobile menu toggle
+      document.querySelector('.menu-toggle').addEventListener('click', function() {
+         document.querySelector('.nav-menu').classList.toggle('active');
+      });
+
+      // Smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+         anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+               target.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start'
+               });
+               // Close mobile menu if open
+               document.querySelector('.nav-menu').classList.remove('active');
+            }
+         });
+      });
+
+      // FAQ functionality
+      function toggleFAQ(button) {
+         const answer = button.nextElementSibling;
+         const icon = button.querySelector('.faq-icon');
+         
+         // Close other FAQs
+         document.querySelectorAll('.faq-answer').forEach(faq => {
+            if (faq !== answer) {
+               faq.classList.remove('active');
+            }
+         });
+         
+         document.querySelectorAll('.faq-icon').forEach(ic => {
+            if (ic !== icon) {
+               ic.classList.remove('rotate');
+            }
+         });
+         
+         // Toggle current FAQ
+         answer.classList.toggle('active');
+         icon.classList.toggle('rotate');
+      }
+
+      // Add scroll effect to header
+      window.addEventListener('scroll', function() {
+         const header = document.querySelector('header');
+         if (window.scrollY > 50) {
+            header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+         } else {
+            header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
+         }
+      });
+
+      // Simple animation on scroll
+      const observerCallback = (entries) => {
+         entries.forEach(entry => {
+            if (entry.isIntersecting) {
+               entry.target.style.opacity = '1';
+               entry.target.style.transform = 'translateY(0)';
+            }
+         });
+      };
+
+      const observer = new IntersectionObserver(observerCallback, {
+         threshold: 0.1
+      });
+
+      // Animate cards on scroll
+      document.querySelectorAll('.feature-card, .team-member, .faq-item').forEach(el => {
+         el.style.opacity = '0';
+         el.style.transform = 'translateY(20px)';
+         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+         observer.observe(el);
+      });
+   </script>
+</body>
+
+</html>

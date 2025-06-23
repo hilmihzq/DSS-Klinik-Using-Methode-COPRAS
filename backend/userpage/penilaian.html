@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Penilaian Klinik - SPKlinik</title>
+   <meta name="description" content="Berikan penilaian untuk setiap kriteria klinik berdasarkan preferensi Anda.">
+   
+   <!-- Google Fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+   <style>
+      * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+      }
+
+      body {
+         font-family: 'Poppins', sans-serif;
+         background-color: #f8fafc;
+         color: #333333;
+         line-height: 1.6;
+         font-size: 16px;
+         min-height: 100vh;
+      }
+
+      /* Container */
+      .container {
+         max-width: 1100px;
+         margin: 0 auto;
+         padding: 0 20px;
+      }
+
+      /* Header */
+      header {
+         background: #ffffff;
+         padding: 15px 0;
+         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+         position: sticky;
+         top: 0;
+         z-index: 100;
+      }
+
+      nav {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .logo {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         font-size: 24px;
+         font-weight: 700;
+         color: #2563eb;
+         text-decoration: none;
+      }
+
+      .logo-icon {
+         width: 35px;
+         height: 35px;
+         background: #2563eb;
+         border-radius: 8px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: white;
+         font-weight: 700;
+         font-size: 18px;
+      }
+
+      .nav-menu {
+         display: flex;
+         list-style: none;
+         gap: 30px;
+         align-items: center;
+      }
+
+      .nav-menu a {
+         color: #333333;
+         text-decoration: none;
+         font-weight: 500;
+         padding: 8px 16px;
+         border-radius: 6px;
+         transition: all 0.3s ease;
+      }
+
+      .nav-menu a:hover, .nav-menu a.active {
+         background: #f3f4f6;
+         color: #2563eb;
+      }
+
+      .btn-back-home {
+         background: #2563eb;
+         color: white;
+         padding: 10px 20px;
+         border-radius: 25px;
+         font-size: 0.95rem;
+         font-weight: 500;
+         text-decoration: none;
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+         transition: all 0.3s ease;
+         border: none;
+         cursor: pointer;
+      }
+
+      .btn-back-home:hover {
+         background: #1d4ed8;
+         color: white;
+         transform: translateY(-1px);
+         box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+      }
+
+      .back-icon {
+         font-size: 1.1rem;
+         transition: transform 0.3s ease;
+      }
+
+      .btn-back-home:hover .back-icon {
+         transform: translateX(-2px);
+      }
+
+      /* Main Content */
+      .main-content {
+         padding: 60px 0;
+         min-height: calc(100vh - 140px);
+      }
+
+      .page-header {
+         text-align: center;
+         margin-bottom: 50px;
+      }
+
+      .page-title {
+         font-size: 36px;
+         font-weight: 700;
+         color: #1e293b;
+         margin-bottom: 10px;
+      }
+
+      .page-subtitle {
+         font-size: 18px;
+         color: #64748b;
+         max-width: 600px;
+         margin: 0 auto;
+      }
+
+      /* Progress Bar */
+      .progress-container {
+         background: white;
+         border-radius: 12px;
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+         border: 1px solid #e2e8f0;
+         padding: 20px;
+         margin-bottom: 30px;
+      }
+
+      .progress-info {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 10px;
+      }
+
+      .progress-text {
+         font-size: 14px;
+         color: #64748b;
+         font-weight: 500;
+      }
+
+      .progress-bar-container {
+         width: 100%;
+         height: 8px;
+         background: #f1f5f9;
+         border-radius: 4px;
+         overflow: hidden;
+      }
+
+      .progress-bar {
+         height: 100%;
+         background: linear-gradient(90deg, #2563eb, #3b82f6);
+         border-radius: 4px;
+         transition: width 0.3s ease;
+         width: 0%;
+      }
+
+      /* Question Card */
+      .question-card {
+         background: white;
+         border-radius: 12px;
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+         border: 1px solid #e2e8f0;
+         overflow: hidden;
+         margin-bottom: 30px;
+      }
+
+      .question-header {
+         background: #f8fafc;
+         padding: 30px;
+         border-bottom: 1px solid #e2e8f0;
+         text-align: center;
+      }
+
+      .question-title {
+         font-size: 24px;
+         font-weight: 600;
+         color: #1e293b;
+         margin: 0;
+      }
+
+      .question-content {
+         padding: 30px;
+      }
+
+      /* Form Controls */
+      .form-check {
+         border: 2px solid #e2e8f0;
+         border-radius: 12px;
+         padding: 20px 25px;
+         margin-bottom: 15px;
+         background-color: white;
+         transition: all 0.3s ease;
+         cursor: pointer;
+         position: relative;
+      }
+
+      .form-check:hover {
+         border-color: #2563eb;
+         transform: translateY(-2px);
+         box-shadow: 0 8px 25px rgba(37, 99, 235, 0.1);
+         background-color: #f8fafc;
+      }
+
+      .form-check:has(input:checked) {
+         border-color: #2563eb;
+         background-color: #f0f9ff;
+         transform: translateY(-2px);
+         box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+      }
+
+      .form-check:has(input:checked)::after {
+         content: '✓';
+         position: absolute;
+         right: 20px;
+         top: 50%;
+         transform: translateY(-50%);
+         color: #2563eb;
+         font-weight: bold;
+         font-size: 1.2rem;
+      }
+
+      .form-check-input {
+         display: none;
+      }
+
+      .form-check-label {
+         font-size: 16px;
+         color: #374151;
+         font-weight: 500;
+         cursor: pointer;
+         width: 100%;
+         margin: 0;
+         padding-right: 40px;
+         line-height: 1.5;
+      }
+
+      /* Buttons */
+      .btn {
+         padding: 15px 30px;
+         border-radius: 8px;
+         text-decoration: none;
+         font-weight: 600;
+         transition: all 0.3s ease;
+         border: none;
+         cursor: pointer;
+         font-size: 16px;
+         font-family: 'Poppins', sans-serif;
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+         justify-content: center;
+         min-width: 200px;
+      }
+
+      .btn-primary {
+         background: #2563eb;
+         color: white;
+      }
+
+      .btn-primary:hover {
+         background: #1d4ed8;
+         transform: translateY(-2px);
+         box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      }
+
+      .btn-primary:disabled {
+         background: #94a3b8;
+         cursor: not-allowed;
+         transform: none;
+         box-shadow: none;
+      }
+
+      .button-group {
+         display: flex;
+         gap: 15px;
+         justify-content: center;
+         flex-wrap: wrap;
+         margin-top: 30px;
+      }
+
+      /* Loading State */
+      .loading {
+         display: inline-block;
+         width: 20px;
+         height: 20px;
+         border: 2px solid rgba(255,255,255,0.3);
+         border-radius: 50%;
+         border-top-color: white;
+         animation: spin 1s ease-in-out infinite;
+         margin-right: 10px;
+      }
+
+      @keyframes spin {
+         to { transform: rotate(360deg); }
+      }
+
+      /* Alert */
+      .alert {
+         padding: 20px;
+         border-radius: 12px;
+         margin-bottom: 20px;
+         border: 1px solid;
+      }
+
+      .alert-danger {
+         background: #fef2f2;
+         color: #dc2626;
+         border-color: #fecaca;
+      }
+
+      .alert-info {
+         background: #eff6ff;
+         color: #2563eb;
+         border-color: #bfdbfe;
+      }
+
+      /* Footer */
+      footer {
+         background: white;
+         padding: 40px 0;
+         border-top: 1px solid #e2e8f0;
+         text-align: center;
+         margin-top: auto;
+      }
+
+      footer p {
+         color: #64748b;
+         margin-bottom: 10px;
+      }
+
+      footer a {
+         color: #2563eb;
+         text-decoration: none;
+      }
+
+      footer a:hover {
+         text-decoration: underline;
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+         .nav-menu {
+            display: none;
+         }
+
+         .page-title {
+            font-size: 28px;
+         }
+
+         .page-subtitle {
+            font-size: 16px;
+         }
+
+         .question-header,
+         .question-content {
+            padding: 20px;
+         }
+
+         .question-title {
+            font-size: 20px;
+         }
+
+         .form-check {
+            padding: 15px 20px;
+         }
+
+         .form-check-label {
+            font-size: 14px;
+         }
+
+         .button-group {
+            flex-direction: column;
+            align-items: center;
+         }
+
+         .btn {
+            width: 100%;
+            max-width: 300px;
+         }
+      }
+   </style>
+</head>
+
+<body>
+   <!-- Header -->
+   <header>
+      <div class="container">
+         <nav>
+            <a href="#" class="logo">
+               <div class="logo-icon">SP</div>
+               SPKlinik
+            </a>
+            <ul class="nav-menu">
+               <li><a href="home.html">Beranda</a></li>
+               <li><a href="#tentang">Tentang</a></li>
+               <li><a href="#tim">Tim</a></li>
+               <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <button class="btn-back-home" onclick="goBackHome()">
+               <span class="back-icon">←</span>
+               Kembali ke Beranda
+            </button>
+         </nav>
+      </div>
+   </header>
+
+   <!-- Main Content -->
+   <main class="main-content">
+      <div class="container">
+         <!-- Page Header -->
+         <div class="page-header">
+            <h1 class="page-title">Penilaian Kriteria Klinik</h1>
+            <p class="page-subtitle">Berikan penilaian untuk setiap kriteria berdasarkan preferensi dan kebutuhan Anda</p>
+         </div>
+
+         <!-- Progress Bar -->
+         <div class="progress-container">
+            <div class="progress-info">
+               <span class="progress-text">Progress Penilaian</span>
+               <span class="progress-text" id="progress-text">0 dari 0</span>
+            </div>
+            <div class="progress-bar-container">
+               <div class="progress-bar" id="progress-bar"></div>
+            </div>
+         </div>
+
+         <!-- Question Card -->
+         <div class="question-card">
+            <div class="question-header">
+               <h3 class="question-title" id="pertanyaan-title">Memuat pertanyaan...</h3>
+            </div>
+            
+            <div class="question-content">
+               <div id="loading-indicator" class="alert alert-info">
+                  <div style="display: flex; align-items: center; justify-content: center;">
+                     <div class="loading"></div>
+                     Memuat kriteria penilaian...
+                  </div>
+               </div>
+
+               <form id="form-penilaian" style="display: none;">
+                  <div id="pilihan-container"></div>
+                  
+                  <div class="button-group">
+                     <button type="submit" class="btn btn-primary">
+                        Pertanyaan Selanjutnya
+                     </button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </main>
+
+   <!-- Footer -->
+   <footer>
+      <div class="container">
+         <p>&copy; 2025 <a href="#">SPKlinik</a>. Hak Cipta Dilindungi.</p>
+         <p>Dibuat dengan ❤️ untuk keluarga Indonesia</p>
+      </div>
+   </footer>
+
+   <script>
+      let kriteriaList = [];
+      let currentIndex = 0;
+      const nilaiUser = [];
+
+      // Update progress bar
+      function updateProgress() {
+         const progressBar = document.getElementById('progress-bar');
+         const progressText = document.getElementById('progress-text');
+         const progress = (currentIndex / kriteriaList.length) * 100;
+         
+         progressBar.style.width = progress + '%';
+         progressText.textContent = `${currentIndex} dari ${kriteriaList.length}`;
+      }
+
+      async function mulai() {
+         try {
+            const res = await fetch("http://localhost:5000/api/copras/pilihan");
+            
+            if (!res.ok) {
+               throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            
+            kriteriaList = await res.json();
+            
+            if (!kriteriaList || kriteriaList.length === 0) {
+               throw new Error('Tidak ada data kriteria yang tersedia');
+            }
+            
+            // Hide loading and show form
+            document.getElementById('loading-indicator').style.display = 'none';
+            document.getElementById('form-penilaian').style.display = 'block';
+            
+            updateProgress();
+            tampilkanPertanyaan();
+            
+         } catch (err) {
+            console.error('Error loading criteria:', err);
+            document.getElementById('loading-indicator').innerHTML = `
+               <div class="alert alert-danger">
+                  ❌ Gagal memuat kriteria: ${err.message}
+                  <br><small>Pastikan server backend berjalan di http://localhost:5000</small>
+               </div>
+            `;
+         }
+      }
+
+      function tampilkanPertanyaan() {
+         if (currentIndex >= kriteriaList.length) {
+            // Semua pertanyaan sudah dijawab
+            localStorage.setItem("nilai_user", JSON.stringify(nilaiUser));
+            window.location.href = "hasil.html";
+            return;
+         }
+
+         const current = kriteriaList[currentIndex];
+         document.getElementById("pertanyaan-title").textContent = current.nama_kriteria;
+
+         const pilihanContainer = document.getElementById("pilihan-container");
+         pilihanContainer.innerHTML = "";
+
+         if (!current.pilihan || current.pilihan.length === 0) {
+            pilihanContainer.innerHTML = `
+               <div class="alert alert-danger">
+                  Tidak ada pilihan tersedia untuk kriteria ini.
+               </div>
+            `;
+            return;
+         }
+
+         current.pilihan.forEach((p, i) => {
+            const radioId = `pilihan${i}`;
+            const div = document.createElement("div");
+            div.className = "form-check";
+            div.innerHTML = `
+               <input class="form-check-input" type="radio" name="skor" id="${radioId}" value="${p.skor}" required>
+               <label class="form-check-label" for="${radioId}">
+                  <strong>${p.skor}</strong> - ${p.deskripsi}
+               </label>
+            `;
+            pilihanContainer.appendChild(div);
+         });
+
+         // Update progress
+         updateProgress();
+      }
+
+      document.getElementById("form-penilaian").addEventListener("submit", function (e) {
+         e.preventDefault();
+
+         const selected = document.querySelector('input[name="skor"]:checked');
+         if (!selected) {
+            alert("❌ Silakan pilih salah satu opsi sebelum melanjutkan.");
+            return;
+         }
+
+         // Add loading effect to button
+         const button = document.querySelector('.btn-primary');
+         const originalText = button.innerHTML;
+         button.innerHTML = '<span class="loading"></span>Memproses...';
+         button.disabled = true;
+
+         // Simulate processing delay for better UX
+         setTimeout(() => {
+            nilaiUser.push(parseInt(selected.value));
+            currentIndex++;
+
+            if (currentIndex < kriteriaList.length) {
+               button.innerHTML = originalText;
+               button.disabled = false;
+               tampilkanPertanyaan();
+            } else {
+               // Semua pertanyaan selesai
+               localStorage.setItem("nilai_user", JSON.stringify(nilaiUser));
+               window.location.href = "hasil.html";
+            }
+         }, 800);
+      });
+
+      // Function for back to home button
+      function goBackHome() {
+         if (confirm('🤔 Apakah Anda yakin ingin kembali ke halaman utama? Progress penilaian akan hilang.')) {
+            window.location.href = 'home.html';
+         }
+      }
+
+      // Add scroll effect to header
+      window.addEventListener('scroll', function() {
+         const header = document.querySelector('header');
+         if (window.scrollY > 50) {
+            header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+         } else {
+            header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
+         }
+      });
+
+      // Initialize page
+      mulai();
+   </script>
+</body>
+
+</html>

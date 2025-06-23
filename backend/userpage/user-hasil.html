@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rekomendasi Klinik - Hasil Analisis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .loading {
+      text-align: center;
+      color: white;
+      font-size: 1.2rem;
+      margin: 3rem 0;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .user-preference {
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .user-preference h2 {
+      color: #4f46e5;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .preference-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .preference-item {
+      background: #f8fafc;
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid #4f46e5;
+    }
+
+    .preference-item h4 {
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .preference-value {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .score-badge {
+      background: #4f46e5;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .ranking-section {
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .ranking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .ranking-header h2 {
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .methodology-info {
+      background: #e0f2fe;
+      color: #0277bd;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .clinic-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .clinic-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .clinic-card.user-preference-card {
+      border: 2px solid #4f46e5;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+    }
+
+    .clinic-card.user-preference-card::before {
+      content: "Preferensi Anda";
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #4f46e5;
+      color: white;
+      padding: 0.25rem 1rem;
+      border-bottom-left-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .clinic-card.top-recommendation {
+      border: 2px solid #10b981;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    }
+
+    .clinic-card.top-recommendation::before {
+      content: "⭐ Rekomendasi Terbaik";
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #10b981;
+      color: white;
+      padding: 0.25rem 1rem;
+      border-bottom-left-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .clinic-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .clinic-info h3 {
+      color: #1e293b;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .clinic-address {
+      color: #64748b;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ranking-badge {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .ranking-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .ranking-label {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .metric-item {
+      text-align: center;
+      padding: 0.75rem;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    .metric-value {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1e293b;
+      display: block;
+    }
+
+    .metric-label {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      background: #4f46e5;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #4338ca;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #4f46e5;
+      border: 2px solid #4f46e5;
+    }
+
+    .btn-secondary:hover {
+      background: #4f46e5;
+      color: white;
+    }
+
+    .error-message {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      background: rgba(255,255,255,0.9);
+      color: #4f46e5;
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .back-button:hover {
+      background: white;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .clinic-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .ranking-badge {
+        align-self: flex-end;
+      }
+      
+      .back-button {
+        top: 1rem;
+        left: 1rem;
+        padding: 0.5rem 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="back-button" onclick="goBack()">
+    ← Kembali
+  </button>
+
+  <div class="container">
+    <div class="header">
+      <h1>🏥 Rekomendasi Klinik Terbaik</h1>
+      <p>Berdasarkan preferensi dan analisis menggunakan metode COPRAS</p>
+    </div>
+
+    <div id="loadingSection" class="loading">
+      <div class="spinner"></div>
+      <p>Sedang menganalisis preferensi Anda...</p>
+    </div>
+
+    <div id="errorSection" class="error-message" style="display: none;">
+      <h3>❌ Terjadi Kesalahan</h3>
+      <p id="errorText">Gagal memuat data rekomendasi.</p>
+      <button class="btn btn-primary" onclick="loadRecommendations()" style="margin-top: 1rem;">
+        🔄 Coba Lagi
+      </button>
+    </div>
+
+    <div id="contentSection" style="display: none;">
+      <!-- User Preferences Section -->
+      <div class="user-preference">
+        <h2>
+          👤 Preferensi Anda
+        </h2>
+        <div class="preference-grid" id="userPreferences">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Ranking Results Section -->
+      <div class="ranking-section">
+        <div class="ranking-header">
+          <h2>
+            🏆 Hasil Rekomendasi
+          </h2>
+          <div class="methodology-info">
+            Metode COPRAS (Complex Proportional Assessment)
+          </div>
+        </div>
+        
+        <div id="rankingResults">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mapping kriteria untuk display
+    const kriteriaLabels = {
+      C1: "Biaya Konsultasi",
+      C2: "Jarak & Lokasi", 
+      C3: "Fasilitas & Kenyamanan",
+      C4: "Reputasi & Rating",
+      C5: "Kecepatan Layanan",
+      C6: "Ketersediaan Dokter"
+    };
+
+    // Mapping nilai ke deskripsi
+    const nilaiDeskripsi = {
+      C1: {
+        5: "≤ Rp50.000, tanpa biaya tambahan",
+        4: "Rp50.001–Rp75.000, minimal biaya tambahan", 
+        3: "Rp75.001–Rp100.000, ada biaya tambahan",
+        2: "Rp100.001–Rp150.000, biaya tambahan cukup",
+        1: "> Rp150.000, banyak biaya tambahan"
+      },
+      C2: {
+        5: "≤ 1 km, < 10 menit, akses mudah",
+        4: "1–3 km, 10–20 menit, akses cukup baik",
+        3: "3–5 km, 20–30 menit, akses terbatas",
+        2: "5–10 km, 30–45 menit, akses sulit",
+        1: "> 10 km, > 45 menit, akses sangat sulit"
+      },
+      C3: {
+        5: "Sangat nyaman, kebersihan sempurna, alat lengkap",
+        4: "Nyaman, kebersihan baik, alat cukup lengkap",
+        3: "Cukup nyaman, kebersihan standar, alat basic",
+        2: "Kurang nyaman, kebersihan kurang, alat terbatas",
+        1: "Tidak nyaman, kebersihan buruk, alat minimal"
+      },
+      C4: {
+        5: "Rating > 4, banyak rekomendasi positif",
+        4: "Rating 3.5–4, cukup banyak rekomendasi",
+        3: "Rating 3–3.5, testimoni campuran",
+        2: "Rating < 3, mulai ada keluhan",
+        1: "Rating < 2, banyak keluhan negatif"
+      },
+      C5: {
+        5: "< 10 menit, registrasi cepat, efisien",
+        4: "10–20 menit, proses cukup cepat",
+        3: "20–30 menit, ada sedikit keterlambatan",
+        2: "30–45 menit, proses agak lambat",
+        1: "> 45 menit, proses sangat lambat"
+      },
+      C6: {
+        5: "≥ 5 dokter umum + ≥ 5 spesialis, jam luas",
+        4: "≥ 3 dokter umum + ≥ 3 spesialis, jam cukup",
+        3: "≥ 2 dokter umum + ≥ 1 spesialis, jam standar",
+        2: "1 dokter umum, jam terbatas",
+        1: "Dokter jarang tersedia, jam kurang"
+      }
+    };
+
+    // Load recommendations on page load
+    document.addEventListener('DOMContentLoaded', loadRecommendations);
+
+    async function loadRecommendations() {
+      try {
+        showLoading();
+        
+        // Get user preferences from localStorage (from kuesioner.html)
+        const hasilRekomendasi = localStorage.getItem('hasilRekomendasi');
+        if (!hasilRekomendasi) {
+          throw new Error('Data preferensi tidak ditemukan. Silakan isi kuesioner terlebih dahulu.');
+        }
+
+        const data = JSON.parse(hasilRekomendasi);
+        
+        // Get user input from URL parameters (backup method)
+        const urlParams = new URLSearchParams(window.location.search);
+        const userPreferences = {};
+        
+        // Extract user preferences from URL or localStorage
+        for (let i = 1; i <= 6; i++) {
+          const key = `C${i}`;
+          userPreferences[key] = urlParams.get(key) || getUserPreferenceFromRanking(data, key);
+        }
+
+        displayUserPreferences(userPreferences);
+        displayRankingResults(data.ranking || data);
+        
+        showContent();
+        
+      } catch (error) {
+        console.error('Error loading recommendations:', error);
+        showError(error.message);
+      }
+    }
+
+    function getUserPreferenceFromRanking(data, criteriaKey) {
+      // Find user preference in ranking data
+      const userEntry = (data.ranking || data).find(item => item.isUser);
+      return userEntry ? userEntry[criteriaKey.toLowerCase()] : null;
+    }
+
+    function displayUserPreferences(preferences) {
+      const container = document.getElementById('userPreferences');
+      container.innerHTML = '';
+
+      Object.entries(preferences).forEach(([key, value]) => {
+        if (value && kriteriaLabels[key]) {
+          const item = document.createElement('div');
+          item.className = 'preference-item';
+          
+          const priorityLevel = value >= 4 ? 'Tinggi' : value >= 3 ? 'Sedang' : 'Rendah';
+          const priorityColor = value >= 4 ? '#10b981' : value >= 3 ? '#f59e0b' : '#ef4444';
+          
+          item.innerHTML = `
+            <h4>${kriteriaLabels[key]}</h4>
+            <div class="preference-value">
+              <span class="score-badge" style="background-color: ${priorityColor}">
+                Skor: ${value}
+              </span>
+              <span style="font-size: 0.85rem; color: #64748b;">
+                Prioritas ${priorityLevel}
+              </span>
+            </div>
+            <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">
+              ${nilaiDeskripsi[key] ? nilaiDeskripsi[key][value] : 'Deskripsi tidak tersedia'}
+            </p>
+          `;
+          
+          container.appendChild(item);
+        }
+      });
+    }
+
+    function displayRankingResults(ranking) {
+      const container = document.getElementById('rankingResults');
+      container.innerHTML = '';
+
+      ranking.forEach((clinic, index) => {
+        const card = document.createElement('div');
+        card.className = 'clinic-card';
+        
+        // Add special styling for user preference and top recommendation
+        if (clinic.isUser) {
+          card.classList.add('user-preference-card');
+        } else if (index === 0 || (index === 1 && ranking[0].isUser)) {
+          // Top recommendation (first non-user entry)
+          card.classList.add('top-recommendation');
+        }
+
+        const isTopRecommendation = !clinic.isUser && (index === 0 || (index === 1 && ranking[0].isUser));
+        
+        card.innerHTML = `
+          <div class="clinic-header">
+            <div class="clinic-info">
+              <h3>${clinic.nama}</h3>
+              ${!clinic.isUser ? `
+                <div class="clinic-address">
+                  📍 Lokasi Klinik
+                </div>
+              ` : `
+                <div class="clinic-address">
+                  ⚙️ Berdasarkan jawaban kuesioner Anda
+                </div>
+              `}
+            </div>
+            <div class="ranking-badge">
+              <span class="ranking-number">#${clinic.ranking}</span>
+              <span class="ranking-label">Ranking</span>
+            </div>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <span class="metric-value">${clinic.qi}</span>
+              <div class="metric-label">Skor COPRAS</div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-value">${clinic.sPlus}</span>
+              <div class="metric-label">Nilai Benefit</div>
+            </div>
+            <div class="metric-item">
+              <span class="metric-value">${clinic.sMinus || clinic.sMin}</span>
+              <div class="metric-label">Nilai Cost</div>
+            </div>
+            ${!clinic.isUser ? `
+              <div class="metric-item">
+                <span class="metric-value">${Math.round((clinic.qi / ranking[0].qi) * 100)}%</span>
+                <div class="metric-label">Kesesuaian</div>
+              </div>
+            ` : ''}
+          </div>
+
+          ${!clinic.isUser ? `
+            <div class="actions">
+              <button class="btn btn-primary" onclick="lihatDetailKlinik(${clinic.id || clinic.klinik_id})">
+                🏥 Lihat Detail Klinik
+              </button>
+              <button class="btn btn-secondary" onclick="hubungiKlinik(${clinic.id || clinic.klinik_id})">
+                📞 Hubungi Klinik
+              </button>
+              ${isTopRecommendation ? `
+                <button class="btn btn-primary" onclick="buatJanji(${clinic.id || clinic.klinik_id})" style="background: #10b981;">
+                  ⭐ Buat Janji Temu
+                </button>
+              ` : ''}
+            </div>
+          ` : `
+            <div class="actions">
+              <button class="btn btn-secondary" onclick="ulangiKuesioner()">
+                🔄 Ubah Preferensi
+              </button>
+            </div>
+          `}
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function showLoading() {
+      document.getElementById('loadingSection').style.display = 'block';
+      document.getElementById('errorSection').style.display = 'none';
+      document.getElementById('contentSection').style.display = 'none';
+    }
+
+    function showError(message) {
+      document.getElementById('errorText').textContent = message;
+      document.getElementById('loadingSection').style.display = 'none';
+      document.getElementById('errorSection').style.display = 'block';
+      document.getElementById('contentSection').style.display = 'none';
+    }
+
+    function showContent() {
+      document.getElementById('loadingSection').style.display = 'none';
+      document.getElementById('errorSection').style.display = 'none';
+      document.getElementById('contentSection').style.display = 'block';
+    }
+
+    // Action functions
+    function goBack() {
+      window.history.back();
+    }
+
+    function ulangiKuesioner() {
+      window.location.href = 'kuesioner.html';
+    }
+
+    function lihatDetailKlinik(klinikId) {
+      // Redirect to clinic detail page
+      window.location.href = `detail-klinik.html?id=${klinikId}`;
+    }
+
+    function hubungiKlinik(klinikId) {
+      // Open contact modal or redirect to contact page
+      alert(`Menghubungi klinik dengan ID: ${klinikId}`);
+      // Implement actual contact functionality
+    }
+
+    function buatJanji(klinikId) {
+      // Redirect to appointment booking page
+      window.location.href = `buat-janji.html?klinik=${klinikId}`;
+    }
+  </script>
+</body>
+</html>

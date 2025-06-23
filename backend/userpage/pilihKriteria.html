@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Kelola Kriteria - SPKlinik</title>
+   <meta name="description" content="Kelola kriteria dan bobot untuk sistem pendukung keputusan pemilihan klinik terbaik.">
+   
+   <!-- Google Fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+   <style>
+      * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+      }
+
+      body {
+         font-family: 'Poppins', sans-serif;
+         background-color: #f8fafc;
+         color: #333333;
+         line-height: 1.6;
+         font-size: 16px;
+         min-height: 100vh;
+      }
+
+      /* Container */
+      .container {
+         max-width: 1100px;
+         margin: 0 auto;
+         padding: 0 20px;
+      }
+
+      /* Header */
+      header {
+         background: #ffffff;
+         padding: 15px 0;
+         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+         position: sticky;
+         top: 0;
+         z-index: 100;
+      }
+
+      nav {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .logo {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         font-size: 24px;
+         font-weight: 700;
+         color: #2563eb;
+         text-decoration: none;
+      }
+
+      .logo-icon {
+         width: 35px;
+         height: 35px;
+         background: #2563eb;
+         border-radius: 8px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: white;
+         font-weight: 700;
+         font-size: 18px;
+      }
+
+      .nav-menu {
+         display: flex;
+         list-style: none;
+         gap: 30px;
+         align-items: center;
+      }
+
+      .nav-menu a {
+         color: #333333;
+         text-decoration: none;
+         font-weight: 500;
+         padding: 8px 16px;
+         border-radius: 6px;
+         transition: all 0.3s ease;
+      }
+
+      .nav-menu a:hover, .nav-menu a.active {
+         background: #f3f4f6;
+         color: #2563eb;
+      }
+
+      .menu-toggle {
+         display: none;
+         flex-direction: column;
+         cursor: pointer;
+         gap: 4px;
+      }
+
+      .menu-toggle span {
+         width: 25px;
+         height: 3px;
+         background: #333333;
+         border-radius: 2px;
+         transition: 0.3s;
+      }
+
+      /* Main Content */
+      .main-content {
+         padding: 60px 0;
+         min-height: calc(100vh - 140px);
+      }
+
+      .page-header {
+         text-align: center;
+         margin-bottom: 50px;
+      }
+
+      .page-title {
+         font-size: 36px;
+         font-weight: 700;
+         color: #1e293b;
+         margin-bottom: 10px;
+      }
+
+      .page-subtitle {
+         font-size: 18px;
+         color: #64748b;
+         max-width: 600px;
+         margin: 0 auto;
+      }
+
+      /* Table Card */
+      .table-card {
+         background: white;
+         border-radius: 12px;
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+         border: 1px solid #e2e8f0;
+         overflow: hidden;
+         margin-bottom: 30px;
+      }
+
+      .table-header {
+         background: #f8fafc;
+         padding: 20px 30px;
+         border-bottom: 1px solid #e2e8f0;
+      }
+
+      .table-header h3 {
+         font-size: 20px;
+         font-weight: 600;
+         color: #1e293b;
+         margin: 0;
+      }
+
+      /* Custom Table Styling */
+      .criteria-table {
+         width: 100%;
+         border-collapse: collapse;
+         background: white;
+      }
+
+      .criteria-table thead {
+         background: #f1f5f9;
+      }
+
+      .criteria-table th,
+      .criteria-table td {
+         padding: 15px 20px;
+         text-align: left;
+         border-bottom: 1px solid #e2e8f0;
+      }
+
+      .criteria-table th {
+         font-weight: 600;
+         color: #374151;
+         font-size: 14px;
+         text-transform: uppercase;
+         letter-spacing: 0.05em;
+      }
+
+      .criteria-table td {
+         color: #4b5563;
+      }
+
+      .criteria-table tbody tr:hover {
+         background: #f9fafb;
+      }
+
+      /* Form Controls */
+      .form-input {
+         width: 100%;
+         padding: 8px 12px;
+         border: 1px solid #d1d5db;
+         border-radius: 6px;
+         font-size: 14px;
+         font-family: 'Poppins', sans-serif;
+         transition: all 0.3s ease;
+      }
+
+      .form-input:focus {
+         outline: none;
+         border-color: #2563eb;
+         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .form-select {
+         width: 100%;
+         padding: 8px 12px;
+         border: 1px solid #d1d5db;
+         border-radius: 6px;
+         font-size: 14px;
+         font-family: 'Poppins', sans-serif;
+         background: white;
+         transition: all 0.3s ease;
+      }
+
+      .form-select:focus {
+         outline: none;
+         border-color: #2563eb;
+         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      /* Status Cards */
+      .status-cards {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+         gap: 20px;
+         margin-bottom: 30px;
+      }
+
+      .status-card {
+         background: white;
+         padding: 20px;
+         border-radius: 12px;
+         border: 1px solid #e2e8f0;
+         text-align: center;
+      }
+
+      .status-card.success {
+         border-color: #22c55e;
+         background: #f0fdf4;
+      }
+
+      .status-card.warning {
+         border-color: #f59e0b;
+         background: #fffbeb;
+      }
+
+      .status-card.error {
+         border-color: #ef4444;
+         background: #fef2f2;
+      }
+
+      .status-value {
+         font-size: 24px;
+         font-weight: 700;
+         margin-bottom: 5px;
+      }
+
+      .status-value.success {
+         color: #22c55e;
+      }
+
+      .status-value.warning {
+         color: #f59e0b;
+      }
+
+      .status-value.error {
+         color: #ef4444;
+      }
+
+      .status-label {
+         font-size: 14px;
+         color: #64748b;
+         font-weight: 500;
+      }
+
+      /* Buttons */
+      .btn {
+         padding: 12px 30px;
+         border-radius: 8px;
+         text-decoration: none;
+         font-weight: 600;
+         transition: all 0.3s ease;
+         border: 2px solid transparent;
+         cursor: pointer;
+         font-size: 16px;
+         font-family: 'Poppins', sans-serif;
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+      }
+
+      .btn-primary {
+         background: #2563eb;
+         color: white;
+         border: none;
+      }
+
+      .btn-primary:hover {
+         background: #1d4ed8;
+         transform: translateY(-2px);
+         box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      }
+
+      .btn-secondary {
+         background: white;
+         color: #64748b;
+         border: 2px solid #e2e8f0;
+      }
+
+      .btn-secondary:hover {
+         background: #f8fafc;
+         border-color: #cbd5e1;
+         color: #374151;
+      }
+
+      .button-group {
+         display: flex;
+         gap: 15px;
+         justify-content: center;
+         flex-wrap: wrap;
+         margin-top: 30px;
+      }
+
+      /* Footer */
+      footer {
+         background: white;
+         padding: 40px 0;
+         border-top: 1px solid #e2e8f0;
+         text-align: center;
+         margin-top: auto;
+      }
+
+      footer p {
+         color: #64748b;
+         margin-bottom: 10px;
+      }
+
+      footer a {
+         color: #2563eb;
+         text-decoration: none;
+      }
+
+      footer a:hover {
+         text-decoration: underline;
+      }
+
+      /* Loading State */
+      .loading {
+         text-align: center;
+         padding: 40px;
+         color: #64748b;
+      }
+
+      .loading::after {
+         content: '';
+         display: inline-block;
+         width: 20px;
+         height: 20px;
+         border: 2px solid #e2e8f0;
+         border-radius: 50%;
+         border-top-color: #2563eb;
+         animation: spin 1s ease-in-out infinite;
+         margin-left: 10px;
+      }
+
+      @keyframes spin {
+         to { transform: rotate(360deg); }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+         .nav-menu {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            background: white;
+            flex-direction: column;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+         }
+
+         .nav-menu.active {
+            left: 0;
+         }
+
+         .menu-toggle {
+            display: flex;
+         }
+
+         .page-title {
+            font-size: 28px;
+         }
+
+         .page-subtitle {
+            font-size: 16px;
+         }
+
+         .criteria-table th,
+         .criteria-table td {
+            padding: 10px 15px;
+            font-size: 14px;
+         }
+
+         .button-group {
+            flex-direction: column;
+            align-items: center;
+         }
+
+         .btn {
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+         }
+      }
+
+      @media (max-width: 480px) {
+         .criteria-table {
+            font-size: 12px;
+         }
+
+         .criteria-table th,
+         .criteria-table td {
+            padding: 8px 10px;
+         }
+
+         .form-input,
+         .form-select {
+            font-size: 12px;
+            padding: 6px 8px;
+         }
+      }
+   </style>
+</head>
+
+<body>
+   <!-- Header -->
+   <header>
+      <div class="container">
+         <nav>
+            <a href="#" class="logo">
+               
+               SPKlinik
+            </a>
+            <ul class="nav-menu">
+               <li><a href="home.html">Beranda</a></li>
+               <li><a href="#tentang">Tentang</a></li>
+               <li><a href="#tim">Tim</a></li>
+               <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <div class="menu-toggle">
+               <span></span>
+               <span></span>
+               <span></span>
+            </div>
+         </nav>
+      </div>
+   </header>
+
+   <!-- Main Content -->
+   <main class="main-content">
+      <div class="container">
+         <!-- Page Header -->
+         <div class="page-header">
+            <h1 class="page-title">Kelola Kriteria & Bobot</h1>
+            <p class="page-subtitle">Atur nama, bobot, dan tipe untuk setiap kriteria penilaian klinik secara optimal</p>
+         </div>
+
+         <!-- Status Cards -->
+         <div class="status-cards">
+            <div class="status-card" id="totalBobotCard">
+               <div class="status-value" id="totalBobotValue">0.00</div>
+               <div class="status-label">Total Bobot</div>
+            </div>
+            <div class="status-card">
+               <div class="status-value" style="color: #2563eb;" id="jumlahKriteria">0</div>
+               <div class="status-label">Jumlah Kriteria</div>
+            </div>
+         </div>
+
+         <!-- Table Card -->
+         <div class="table-card">
+            <div class="table-header">
+               <h3>Daftar Kriteria Penilaian</h3>
+            </div>
+            
+            <div id="loadingIndicator" class="loading">
+               Memuat data kriteria...
+            </div>
+            
+            <table class="criteria-table" id="kriteriaTable" style="display: none;">
+               <thead>
+                  <tr>
+                     <th>ID</th>
+                     <th>Nama Kriteria</th>
+                     <th>Bobot (0-1)</th>
+                     <th>Tipe</th>
+                  </tr>
+               </thead>
+               <tbody></tbody>
+            </table>
+         </div>
+
+         <!-- Action Buttons -->
+         <div class="button-group">
+            <button class="btn btn-primary" onclick="updateAllKriteria()">
+               💾 Update Semua Kriteria
+            </button>
+            <button class="btn btn-secondary" onclick="resetForm()">
+               🔄 Reset Form
+            </button>
+            <button class="btn btn-secondary" onclick="konfirmasiLanjut()">
+    🙏 Selanjutnya
+</button>
+
+<script>
+function konfirmasiLanjut() {
+    if (confirm("Apakah Anda yakin untuk lanjut?")) {
+        window.location.href = 'penilaian.html';
+    }
+}
+</script>
+
+         </div>
+      </div>
+   </main>
+
+   <!-- Footer -->
+   <footer>
+      <div class="container">
+         <p>&copy; 2025 <a href="#">SPKlinik</a>. Hak Cipta Dilindungi.</p>
+         <p>Dibuat dengan ❤️ untuk keluarga Indonesia</p>
+      </div>
+   </footer>
+
+   <script>
+      const API_URL = 'http://localhost:3000/api/kriteria';
+      let kriteriaData = [];
+
+      // Mobile menu toggle
+      document.querySelector('.menu-toggle').addEventListener('click', function() {
+         document.querySelector('.nav-menu').classList.toggle('active');
+      });
+
+      async function loadKriteria() {
+         const loadingEl = document.getElementById('loadingIndicator');
+         const tableEl = document.getElementById('kriteriaTable');
+         
+         try {
+            loadingEl.style.display = 'block';
+            tableEl.style.display = 'none';
+            
+            const res = await fetch(API_URL);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            const data = await res.json();
+            kriteriaData = data;
+            
+            const tbody = document.querySelector('#kriteriaTable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(k => {
+               const tr = document.createElement('tr');
+               tr.innerHTML = `
+                  <td><strong>${k.id}</strong></td>
+                  <td><input type="text" class="form-input" id="nama-${k.id}" value="${k.nama}" placeholder="Masukkan nama kriteria" /></td>
+                  <td><input type="number" class="form-input" step="0.01" min="0" max="1" id="bobot-${k.id}" value="${k.bobot}" placeholder="0.00" /></td>
+                  <td>
+                     <select class="form-select" id="tipe-${k.id}">
+                        <option value="cost" ${k.tipe === 'cost' ? 'selected' : ''}>Cost (Semakin kecil semakin baik)</option>
+                        <option value="benefit" ${k.tipe === 'benefit' ? 'selected' : ''}>Benefit (Semakin besar semakin baik)</option>
+                     </select>
+                  </td>
+               `;
+               tbody.appendChild(tr);
+            });
+
+            // Update jumlah kriteria
+            document.getElementById('jumlahKriteria').textContent = data.length;
+            
+            updateTotalBobotDisplay();
+            
+            loadingEl.style.display = 'none';
+            tableEl.style.display = 'table';
+            
+         } catch (error) {
+            loadingEl.innerHTML = `<div style="color: #ef4444;">❌ Gagal memuat data: ${error.message}</div>`;
+            console.error('Error loading criteria:', error);
+         }
+      }
+
+      function updateTotalBobotDisplay() {
+         let total = 0;
+         kriteriaData.forEach(k => {
+            const bobotInput = document.getElementById(`bobot-${k.id}`);
+            if (bobotInput) {
+               const val = parseFloat(bobotInput.value);
+               if (!isNaN(val)) total += val;
+            }
+         });
+         
+         const valueEl = document.getElementById('totalBobotValue');
+         const cardEl = document.getElementById('totalBobotCard');
+         
+         valueEl.textContent = total.toFixed(2);
+         
+         // Update card styling based on total
+         cardEl.className = 'status-card';
+         valueEl.className = 'status-value';
+         
+         if (total.toFixed(2) === '1.00') {
+            cardEl.classList.add('success');
+            valueEl.classList.add('success');
+         } else if (total > 0 && total < 1) {
+            cardEl.classList.add('warning');
+            valueEl.classList.add('warning');
+         } else {
+            cardEl.classList.add('error');
+            valueEl.classList.add('error');
+         }
+      }
+
+      async function updateAllKriteria() {
+         const updatedKriteria = [];
+
+         for (const k of kriteriaData) {
+            const nama = document.getElementById(`nama-${k.id}`).value.trim();
+            const bobot = parseFloat(document.getElementById(`bobot-${k.id}`).value);
+            const tipe = document.getElementById(`tipe-${k.id}`).value;
+
+            if (!nama) {
+               alert(`❌ Nama kriteria ID ${k.id} tidak boleh kosong.`);
+               return;
+            }
+            if (isNaN(bobot) || bobot < 0 || bobot > 1) {
+               alert(`❌ Bobot kriteria ID ${k.id} harus antara 0 dan 1.`);
+               return;
+            }
+            if (tipe !== 'cost' && tipe !== 'benefit') {
+               alert(`❌ Tipe harus "cost" atau "benefit".`);
+               return;
+            }
+
+            updatedKriteria.push({ id: k.id, nama, bobot, tipe });
+         }
+
+         const totalBobot = updatedKriteria.reduce((sum, k) => sum + k.bobot, 0);
+         if (totalBobot.toFixed(2) !== '1.00') {
+            alert(`❌ Total bobot harus 1.00! Saat ini: ${totalBobot.toFixed(2)}\n\nSilakan sesuaikan bobot kriteria agar totalnya menjadi 1.00`);
+            return;
+         }
+
+         if (!confirm('🤔 Apakah Anda yakin ingin memperbarui semua kriteria?')) {
+            return;
+         }
+
+         try {
+            const promises = updatedKriteria.map(k =>
+               fetch(`${API_URL}/${k.id}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(k)
+               })
+            );
+            const responses = await Promise.all(promises);
+            const suksesSemua = responses.every(res => res.ok);
+
+            if (suksesSemua) {
+               alert('✅ Berhasil memperbarui semua kriteria!');
+               loadKriteria();
+            } else {
+               alert('⚠️ Beberapa data gagal diperbarui. Silakan coba lagi.');
+            }
+         } catch (err) {
+            alert('❌ Gagal update data: ' + err.message);
+            console.error('Error updating criteria:', err);
+         }
+      }
+
+      function resetForm() {
+         if (confirm('🔄 Apakah Anda yakin ingin mereset form ke data asli?')) {
+            loadKriteria();
+         }
+      }
+
+      // Event listener for real-time bobot calculation
+      document.addEventListener('input', function (e) {
+         if (e.target.id.startsWith('bobot-')) {
+            updateTotalBobotDisplay();
+         }
+      });
+
+      // Smooth scrolling for navigation
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+         anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+               target.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start'
+               });
+               document.querySelector('.nav-menu').classList.remove('active');
+            }
+         });
+      });
+
+      // Add scroll effect to header
+      window.addEventListener('scroll', function() {
+         const header = document.querySelector('header');
+         if (window.scrollY > 50) {
+            header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+         } else {
+            header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
+         }
+      });
+
+      // Initialize page
+      loadKriteria();
+   </script>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>SPK Pemilihan Klinik - COPRAS</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h2 class="mb-4">Form Penilaian Kriteria Klinik</h2>
+    <form id="form-penilaian">
+      <div class="row" id="kriteria-inputs">
+        <!-- Input kriteria dinamis akan dimasukkan di sini -->
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Proses Rekomendasi</button>
+    </form>
+
+    <div class="mt-5">
+      <h3>Hasil Ranking Klinik</h3>
+      <div id="hasil-container" class="table-responsive mt-3"></div>
+    </div>
+  </div>
+
+  <script>
+    // Ambil dan tampilkan kriteria dari backend
+async function muatKriteria() {
+  const container = document.getElementById("kriteria-inputs");
+  try {
+    const res = await fetch("http://localhost:5000/api/copras/pilihan");
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await res.text();
+      throw new Error(`Expected JSON, got:\n${text}`);
+    }
+
+    const kriteriaList = await res.json();
+
+    kriteriaList.forEach((kriteria, index) => {
+      const col = document.createElement("div");
+      col.className = "col-md-4 mb-3";
+
+      let options = '<option value="">Pilih nilai</option>';
+      kriteria.pilihan.forEach(p => {
+        options += `<option value="${p.skor}">${p.skor} - ${p.deskripsi}</option>`;
+      });
+
+      col.innerHTML = `
+        <label for="C${kriteria.kriteria_id}" class="form-label">${kriteria.nama_kriteria}</label>
+        <select class="form-select" id="C${kriteria.kriteria_id}" required>
+          ${options}
+        </select>
+      `;
+      container.appendChild(col);
+    });
+  } catch (err) {
+    container.innerHTML = `<div class="alert alert-danger">Gagal memuat kriteria: ${err.message}</div>`;
+  }
+}
+
+
+    muatKriteria();
+
+    // Tangani submit form
+    document.getElementById("form-penilaian").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const inputs = document.querySelectorAll("#kriteria-inputs select");
+      const nilai_user = [];
+
+      for (const select of inputs) {
+        const val = parseInt(select.value);
+        if (isNaN(val)) {
+          alert("Semua kriteria harus dipilih!");
+          return;
+        }
+        nilai_user.push(val);
+      }
+
+      try {
+        const response = await fetch("http://localhost:5000/api/copras/hasil", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nilai_user })
+        });
+
+        const data = await response.json();
+        tampilkanHasil(data);
+      } catch (error) {
+        alert("Gagal menghubungi server: " + error);
+      }
+    });
+
+    // Tampilkan hasil ranking
+ function tampilkanHasil(data) {
+  const hasilContainer = document.getElementById("hasil-container");
+  hasilContainer.innerHTML = "";
+
+  // Pisahkan Preferensi Anda dan hasil klinik lainnya
+  const preferensi = data.find(item => item.nama === "Preferensi Anda");
+  const klinikLainnya = data.filter(item => item.nama !== "Preferensi Anda");
+
+  // Tampilkan Preferensi Anda di luar tabel
+  if (preferensi) {
+    const card = document.createElement("div");
+    card.className = "alert alert-info";
+    card.innerHTML = `
+      <h5>Preferensi Anda</h5>
+      <p><strong>Nilai S+</strong>: ${preferensi.S_plus}</p>
+      <p><strong>Nilai S-</strong>: ${preferensi.S_minus}</p>
+      <p><strong>Nilai Preferensi (Q)</strong>: ${preferensi.Q}</p>
+    `;
+    hasilContainer.appendChild(card);
+  }
+
+  // Buat tabel hasil ranking
+  let tabelHTML = `
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Ranking</th>
+          <th>Nama Klinik</th>
+          <th>Nilai S+</th>
+          <th>Nilai S-</th>
+          <th>Nilai Preferensi (Q)</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  klinikLainnya.forEach((item, index) => {
+    tabelHTML += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${item.nama}</td>
+        <td>${item.S_plus}</td>
+        <td>${item.S_minus}</td>
+        <td>${item.Q}</td>
+      </tr>
+    `;
+  });
+
+  tabelHTML += `</tbody></table>`;
+  hasilContainer.innerHTML += tabelHTML;
+}
+  </script>
+</body>
+</html>

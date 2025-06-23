@@ -1,0 +1,268 @@
+<!-- Simpan sebagai: kuesioner.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rekomendasi Klinik - Kuesioner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #4CAF50;
+      color: white;
+    }
+    .brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .home-btn {
+      padding: 0.5rem 1rem;
+      background-color: white;
+      color: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .progress-bar {
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      height: 10px;
+      margin-bottom: 1rem;
+    }
+    .progress-fill {
+      background-color: #4CAF50;
+      height: 100%;
+      border-radius: 5px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .question-counter {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    .question-title {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .option.selected {
+      border-color: #4CAF50;
+      background-color: #f1fff1;
+    }
+    .option input {
+      margin-right: 1rem;
+    }
+    .priority-indicator {
+      margin-left: auto;
+      font-size: 0.85rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      color: white;
+    }
+    .priority-high {
+      background-color: #d32f2f;
+    }
+    .priority-medium {
+      background-color: #f9a825;
+    }
+    .priority-low {
+      background-color: #388e3c;
+    }
+    .next-btn {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">KlinikRekomendasi</div>
+    <button class="home-btn" onclick="window.location.href='dashboard.html'">Home</button>
+  </header>
+
+  <div class="container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="question-counter" id="questionCounter">Pertanyaan 1 dari 6</div>
+
+    <h2 class="question-title" id="questionText">Memuat pertanyaan...</h2>
+
+    <form id="questionForm">
+      <div id="optionsContainer"></div>
+      <button type="submit" class="next-btn" id="nextBtn">Pertanyaan Selanjutnya</button>
+    </form>
+  </div>
+
+  <script>
+    const questionText = document.getElementById("questionText");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const form = document.getElementById("questionForm");
+    const nextBtn = document.getElementById("nextBtn");
+    const progressFill = document.getElementById("progressFill");
+    const questionCounter = document.getElementById("questionCounter");
+
+    const answers = {};
+    let questions = [];
+    let current = 0;
+
+    const kriteriaTexts = {
+      1: "Berapa biaya konsultasi di klinik yang Anda inginkan?",
+      2: "Seberapa dekat lokasi klinik dengan tempat tinggal Anda?",
+      3: "Bagaimana kenyamanan dan kelengkapan fasilitas di klinik?",
+      4: "Bagaimana reputasi dan akreditasi klinik tersebut?",
+      5: "Seberapa cepat proses pelayanan (registrasi, tunggu, dll)?",
+      6: "Bagaimana ketersediaan dan jam praktek dokter di klinik tersebut?"
+    };
+
+    async function loadQuestions() {
+      try {
+        const response = await fetch('http://localhost:3000/api/kriteria_pilihan');
+        const data = await response.json();
+
+        const grouped = {};
+        data.forEach(item => {
+          const id = item.kriteria_id;
+          if (!grouped[id]) grouped[id] = [];
+          grouped[id].push({ skor: item.skor, text: item.deskripsi });
+        });
+
+        questions = Object.keys(grouped).map(id => ({
+          kode: `C${id}`,
+          text: kriteriaTexts[id],
+          options: grouped[id].sort((a, b) => b.skor - a.skor)
+        }));
+
+        if (questions.length === 0) {
+          questionText.textContent = "Tidak ada pertanyaan yang tersedia.";
+          nextBtn.disabled = true;
+          return;
+        }
+
+        renderQuestion();
+      } catch (error) {
+        questionText.textContent = "Gagal memuat pertanyaan.";
+        console.error(error);
+      }
+    }
+
+    function updateProgress() {
+      const progress = ((current + 1) / questions.length) * 100;
+      progressFill.style.width = `${progress}%`;
+      questionCounter.textContent = `Pertanyaan ${current + 1} dari ${questions.length}`;
+    }
+
+    function renderQuestion() {
+      const q = questions[current];
+      updateProgress();
+      questionText.textContent = q.text;
+      optionsContainer.innerHTML = "";
+
+      q.options.forEach(option => {
+        const id = `${q.kode}_opt${option.skor}`;
+        const wrapper = document.createElement("div");
+        wrapper.className = "option";
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "option";
+        input.value = option.skor;
+        input.id = id;
+        input.required = true;
+
+        const label = document.createElement("label");
+        label.setAttribute("for", id);
+        label.textContent = option.text;
+
+        const prioritySpan = document.createElement("span");
+        prioritySpan.className = `priority-indicator priority-${option.skor >= 5 ? 'high' : option.skor >= 3 ? 'medium' : 'low'}`;
+        prioritySpan.textContent = option.skor >= 5 ? "Prioritas Tinggi" : option.skor >= 3 ? "Prioritas Sedang" : "Prioritas Rendah";
+
+        wrapper.appendChild(input);
+        wrapper.appendChild(label);
+        wrapper.appendChild(prioritySpan);
+
+        wrapper.addEventListener("click", () => {
+          document.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
+          wrapper.classList.add("selected");
+          input.checked = true;
+        });
+
+        optionsContainer.appendChild(wrapper);
+      });
+
+      nextBtn.textContent = current === questions.length - 1 ? "Lihat Rekomendasi Klinik" : "Pertanyaan Selanjutnya";
+    }
+
+   form.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const selected = form.querySelector('input[name="option"]:checked');
+  if (!selected) return;
+
+  // Simpan jawaban sebelum current bertambah
+  const kode = questions[current].kode;
+  answers[kode] = parseInt(selected.value);
+
+  current++;
+
+  // Jika masih ada pertanyaan, render berikutnya
+  if (current < questions.length) {
+    renderQuestion();
+  } else {
+    try {
+      const userAnswers = Object.entries(answers).map(([kode, skor]) => {
+        const kriteria_id = parseInt(kode.replace("C", ""));
+        return { kriteria_id, skor };
+      });
+
+      const query = userAnswers.map(a => `C${a.kriteria_id}=${a.skor}`).join("&");
+      const response = await fetch(`http://localhost:3000/api/copras/hasil?${query}`);
+      const result = await response.json();
+
+      localStorage.setItem("hasilRekomendasi", JSON.stringify(result));
+      window.location.href = "user-hasil.html";
+    } catch (error) {
+      console.error("Gagal menghitung rekomendasi:", error);
+      alert("Terjadi kesalahan saat menghitung rekomendasi. Silakan coba lagi.");
+    }
+  }
+});
+
+
+    loadQuestions();
+  </script>
+</body>
+</html>

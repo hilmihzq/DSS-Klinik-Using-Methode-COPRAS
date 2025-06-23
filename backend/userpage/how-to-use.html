@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Cara Penggunaan - SPKlinik</title>
+   <meta name="description" content="Panduan lengkap penggunaan sistem pendukung keputusan pemilihan klinik terbaik dengan metode COPRAS.">
+   
+   <!-- Google Fonts -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+   <style>
+      * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+      }
+
+      body {
+         font-family: 'Poppins', sans-serif;
+         background-color: #f8fafc;
+         color: #333333;
+         line-height: 1.6;
+         font-size: 16px;
+         min-height: 100vh;
+      }
+
+      /* Container */
+      .container {
+         max-width: 1100px;
+         margin: 0 auto;
+         padding: 0 20px;
+      }
+
+      /* Header */
+      header {
+         background: #ffffff;
+         padding: 15px 0;
+         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+         position: sticky;
+         top: 0;
+         z-index: 100;
+         animation: slideDown 0.8s ease-out;
+      }
+
+      @keyframes slideDown {
+         from {
+            transform: translateY(-100%);
+            opacity: 0;
+         }
+         to {
+            transform: translateY(0);
+            opacity: 1;
+         }
+      }
+
+      nav {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+
+      .logo {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         font-size: 24px;
+         font-weight: 700;
+         color: #2563eb;
+         text-decoration: none;
+         animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+         0%, 100% {
+            transform: scale(1);
+         }
+         50% {
+            transform: scale(1.05);
+         }
+      }
+
+      .logo-icon {
+         width: 35px;
+         height: 35px;
+         background: #2563eb;
+         border-radius: 8px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: white;
+         font-weight: 700;
+         font-size: 18px;
+      }
+
+      .nav-menu {
+         display: flex;
+         list-style: none;
+         gap: 30px;
+         align-items: center;
+      }
+
+      .nav-menu li {
+         animation: fadeInUp 0.8s ease-out forwards;
+         opacity: 0;
+      }
+
+      .nav-menu li:nth-child(1) { animation-delay: 0.1s; }
+      .nav-menu li:nth-child(2) { animation-delay: 0.2s; }
+      .nav-menu li:nth-child(3) { animation-delay: 0.3s; }
+      .nav-menu li:nth-child(4) { animation-delay: 0.4s; }
+      .nav-menu li:nth-child(5) { animation-delay: 0.5s; }
+
+      @keyframes fadeInUp {
+         from {
+            transform: translateY(20px);
+            opacity: 0;
+         }
+         to {
+            transform: translateY(0);
+            opacity: 1;
+         }
+      }
+
+      .nav-menu a {
+         color: #333333;
+         text-decoration: none;
+         font-weight: 500;
+         padding: 8px 16px;
+         border-radius: 6px;
+         transition: all 0.3s ease;
+         position: relative;
+         overflow: hidden;
+      }
+
+      .nav-menu a::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: -100%;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+         transition: left 0.5s;
+      }
+
+      .nav-menu a:hover::before {
+         left: 100%;
+      }
+
+      .nav-menu a:hover, .nav-menu a.active {
+         background: #f3f4f6;
+         color: #2563eb;
+         transform: translateY(-2px);
+      }
+
+      .menu-toggle {
+         display: none;
+         flex-direction: column;
+         cursor: pointer;
+         gap: 4px;
+      }
+
+      .menu-toggle span {
+         width: 25px;
+         height: 3px;
+         background: #333333;
+         border-radius: 2px;
+         transition: 0.3s;
+      }
+
+      /* Main Content */
+      .main-content {
+         padding: 40px 0;
+         min-height: calc(100vh - 140px);
+      }
+
+      .page-header {
+         text-align: center;
+         margin-bottom: 50px;
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         color: white;
+         padding: 60px 20px;
+         border-radius: 20px;
+         margin-top: 20px;
+         animation: fadeIn 1s ease-out;
+         position: relative;
+         overflow: hidden;
+      }
+
+      .page-header::before {
+         content: '';
+         position: absolute;
+         top: -50%;
+         left: -50%;
+         width: 200%;
+         height: 200%;
+         background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+         animation: shimmer 3s infinite;
+      }
+
+      @keyframes shimmer {
+         0% {
+            transform: translateX(-100%) translateY(-100%) rotate(45deg);
+         }
+         100% {
+            transform: translateX(100%) translateY(100%) rotate(45deg);
+         }
+      }
+
+      @keyframes fadeIn {
+         from {
+            opacity: 0;
+            transform: translateY(30px);
+         }
+         to {
+            opacity: 1;
+            transform: translateY(0);
+         }
+      }
+
+      .page-title {
+         font-size: 42px;
+         font-weight: 700;
+         margin-bottom: 15px;
+         text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+         animation: typewriter 2s steps(20) forwards;
+         overflow: hidden;
+         white-space: nowrap;
+         border-right: 3px solid white;
+         position: relative;
+         z-index: 2;
+      }
+
+      @keyframes typewriter {
+         from {
+            width: 0;
+         }
+         to {
+            width: 100%;
+         }
+      }
+
+      .page-subtitle {
+         font-size: 20px;
+         opacity: 0;
+         max-width: 700px;
+         margin: 0 auto;
+         animation: fadeInUp 1s ease-out 1s forwards;
+         position: relative;
+         z-index: 2;
+      }
+
+      /* Content Cards */
+      .content-section {
+         margin-bottom: 40px;
+      }
+
+      .section-card {
+         background: white;
+         border-radius: 16px;
+         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+         border: 1px solid #e2e8f0;
+         overflow: hidden;
+         margin-bottom: 30px;
+         transition: transform 0.3s ease, box-shadow 0.3s ease;
+         animation: slideInUp 0.8s ease-out forwards;
+         opacity: 0;
+      }
+
+      @keyframes slideInUp {
+         from {
+            transform: translateY(50px);
+            opacity: 0;
+         }
+         to {
+            transform: translateY(0);
+            opacity: 1;
+         }
+      }
+
+      .section-card:nth-child(1) { animation-delay: 0.2s; }
+      .section-card:nth-child(2) { animation-delay: 0.4s; }
+      .section-card:nth-child(3) { animation-delay: 0.6s; }
+
+      .section-card:hover {
+         transform: translateY(-5px);
+         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .section-header {
+         background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+         color: white;
+         padding: 25px 30px;
+         position: relative;
+         overflow: hidden;
+      }
+
+      .section-header::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         right: 0;
+         width: 100px;
+         height: 100px;
+         background: rgba(255,255,255,0.1);
+         border-radius: 50%;
+         transform: translate(30px, -30px);
+         animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+         0%, 100% {
+            transform: translate(30px, -30px);
+         }
+         50% {
+            transform: translate(35px, -25px);
+         }
+      }
+
+      .section-header h2 {
+         font-size: 24px;
+         font-weight: 700;
+         margin: 0;
+         position: relative;
+         z-index: 2;
+      }
+
+      .section-content {
+         padding: 30px;
+      }
+
+      /* Steps */
+      .steps-container {
+         display: grid;
+         gap: 25px;
+      }
+
+      .step-item {
+         display: flex;
+         gap: 20px;
+         padding: 25px;
+         background: #f8fafc;
+         border-radius: 12px;
+         border-left: 4px solid #2563eb;
+         transition: all 0.3s ease;
+         animation: slideInLeft 0.8s ease-out forwards;
+         opacity: 0;
+      }
+
+      .step-item:nth-child(1) { animation-delay: 0.3s; }
+      .step-item:nth-child(2) { animation-delay: 0.5s; }
+      .step-item:nth-child(3) { animation-delay: 0.7s; }
+      .step-item:nth-child(4) { animation-delay: 0.9s; }
+
+      @keyframes slideInLeft {
+         from {
+            transform: translateX(-50px);
+            opacity: 0;
+         }
+         to {
+            transform: translateX(0);
+            opacity: 1;
+         }
+      }
+
+      .step-item:hover {
+         background: #f1f5f9;
+         transform: translateX(5px) scale(1.02);
+         box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+      }
+
+      .step-number {
+         background: #2563eb;
+         color: white;
+         width: 40px;
+         height: 40px;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-weight: 700;
+         flex-shrink: 0;
+         animation: bounce 1s ease-out;
+         position: relative;
+      }
+
+      .step-number::before {
+         content: '';
+         position: absolute;
+         width: 100%;
+         height: 100%;
+         border-radius: 50%;
+         background: #2563eb;
+         animation: ripple 2s infinite;
+      }
+
+      @keyframes ripple {
+         0% {
+            transform: scale(1);
+            opacity: 1;
+         }
+         100% {
+            transform: scale(1.5);
+            opacity: 0;
+         }
+      }
+
+      @keyframes bounce {
+         0%, 20%, 53%, 80%, 100% {
+            transform: translate3d(0,0,0);
+         }
+         40%, 43% {
+            transform: translate3d(0, -10px, 0);
+         }
+         70% {
+            transform: translate3d(0, -5px, 0);
+         }
+         90% {
+            transform: translate3d(0, -2px, 0);
+         }
+      }
+
+      .step-content h3 {
+         font-size: 18px;
+         font-weight: 600;
+         color: #1e293b;
+         margin-bottom: 8px;
+      }
+
+      .step-content p {
+         color: #64748b;
+         margin-bottom: 0;
+      }
+
+      /* Formula Cards */
+      .formula-card {
+         background: #f8fafc;
+         border: 2px solid #e2e8f0;
+         border-radius: 12px;
+         padding: 25px;
+         margin: 20px 0;
+         position: relative;
+         animation: scaleIn 0.6s ease-out;
+         transition: all 0.3s ease;
+      }
+
+      .formula-card:hover {
+         transform: scale(1.02);
+         box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      }
+
+      @keyframes scaleIn {
+         from {
+            transform: scale(0.9);
+            opacity: 0;
+         }
+         to {
+            transform: scale(1);
+            opacity: 1;
+         }
+      }
+
+      .formula-card::before {
+         content: '📐';
+         position: absolute;
+         top: -10px;
+         left: 20px;
+         background: white;
+         padding: 0 10px;
+         font-size: 20px;
+         animation: rotate 2s linear infinite;
+      }
+
+      @keyframes rotate {
+         from {
+            transform: rotate(0deg);
+         }
+         to {
+            transform: rotate(360deg);
+         }
+      }
+
+      .formula-title {
+         font-size: 18px;
+         font-weight: 600;
+         color: #1e293b;
+         margin-bottom: 15px;
+         margin-top: 10px;
+      }
+
+      .formula-text {
+         font-family: 'Courier New', monospace;
+         background: white;
+         padding: 15px;
+         border-radius: 8px;
+         border: 1px solid #cbd5e1;
+         font-size: 16px;
+         color: #374151;
+         text-align: center;
+         margin-bottom: 10px;
+         transition: all 0.3s ease;
+      }
+
+      .formula-text:hover {
+         border-color: #2563eb;
+         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .formula-description {
+         color: #64748b;
+         font-size: 14px;
+         font-style: italic;
+      }
+
+      /* Example Cards */
+      .example-card {
+         background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+         border-radius: 12px;
+         padding: 25px;
+         margin: 20px 0;
+         border: 2px solid #f59e0b;
+         animation: slideInRight 0.8s ease-out;
+         position: relative;
+         overflow: hidden;
+      }
+
+      .example-card::before {
+         content: '';
+         position: absolute;
+         top: -50%;
+         left: -50%;
+         width: 200%;
+         height: 200%;
+         background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+         animation: shimmer 4s infinite;
+         pointer-events: none;
+      }
+
+      @keyframes slideInRight {
+         from {
+            transform: translateX(50px);
+            opacity: 0;
+         }
+         to {
+            transform: translateX(0);
+            opacity: 1;
+         }
+      }
+
+      .example-title {
+         font-size: 18px;
+         font-weight: 600;
+         color: #92400e;
+         margin-bottom: 15px;
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         position: relative;
+         z-index: 2;
+      }
+
+      .example-title::before {
+         content: '💡';
+         font-size: 20px;
+         animation: glow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes glow {
+         from {
+            filter: brightness(1);
+         }
+         to {
+            filter: brightness(1.3);
+         }
+      }
+
+      .example-table {
+         width: 100%;
+         border-collapse: collapse;
+         background: white;
+         border-radius: 8px;
+         overflow: hidden;
+         margin: 15px 0;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+         position: relative;
+         z-index: 2;
+      }
+
+      .example-table th,
+      .example-table td {
+         padding: 12px 15px;
+         text-align: center;
+         border-bottom: 1px solid #e2e8f0;
+         transition: background-color 0.3s ease;
+      }
+
+      .example-table th {
+         background: #1e293b;
+         color: white;
+         font-weight: 600;
+         font-size: 14px;
+      }
+
+      .example-table td {
+         color: #374151;
+      }
+
+      .example-table tbody tr:nth-child(even) {
+         background: #f8fafc;
+      }
+
+      .example-table tbody tr:hover {
+         background: #e0f2fe;
+         transform: scale(1.01);
+      }
+
+      /* Highlight boxes */
+      .highlight-box {
+         background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+         border: 2px solid #3b82f6;
+         border-radius: 12px;
+         padding: 20px;
+         margin: 20px 0;
+         animation: fadeInScale 0.8s ease-out;
+         position: relative;
+         overflow: hidden;
+      }
+
+      .highlight-box::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: -100%;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+         animation: slideAcross 3s infinite;
+      }
+
+      @keyframes slideAcross {
+         0% {
+            left: -100%;
+         }
+         100% {
+            left: 100%;
+         }
+      }
+
+      @keyframes fadeInScale {
+         from {
+            transform: scale(0.95);
+            opacity: 0;
+         }
+         to {
+            transform: scale(1);
+            opacity: 1;
+         }
+      }
+
+      .highlight-box h4 {
+         color: #1e40af;
+         font-weight: 600;
+         margin-bottom: 10px;
+         display: flex;
+         align-items: center;
+         gap: 8px;
+         position: relative;
+         z-index: 2;
+      }
+
+      .highlight-box h4::before {
+         content: '⚡';
+         font-size: 18px;
+         animation: spark 1.5s ease-in-out infinite;
+      }
+
+      @keyframes spark {
+         0%, 100% {
+            transform: scale(1);
+         }
+         50% {
+            transform: scale(1.2);
+         }
+      }
+
+      .highlight-box p {
+         color: #1e40af;
+         margin: 0;
+         position: relative;
+         z-index: 2;
+      }
+
+      /* Buttons */
+      .btn {
+         padding: 12px 30px;
+         border-radius: 8px;
+         text-decoration: none;
+         font-weight: 600;
+         transition: all 0.3s ease;
+         border: 2px solid transparent;
+         cursor: pointer;
+         font-size: 16px;
+         font-family: 'Poppins', sans-serif;
+         display: inline-flex;
+         align-items: center;
+         gap: 8px;
+         position: relative;
+         overflow: hidden;
+      }
+
+      .btn::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: -100%;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+         transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+         left: 100%;
+      }
+
+      .btn-primary {
+         background: #2563eb;
+         color: white;
+         border: none;
+      }
+
+      .btn-primary:hover {
+         background: #1d4ed8;
+         transform: translateY(-2px) scale(1.05);
+         box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+      }
+
+      .button-group {
+         display: flex;
+         gap: 15px;
+         justify-content: center;
+         flex-wrap: wrap;
+         margin-top: 40px;
+         animation: fadeInUp 1s ease-out 1.5s forwards;
+         opacity: 0;
+      }
+
+      /* Footer */
+      footer {
+         background: white;
+         padding: 40px 0;
+         border-top: 1px solid #e2e8f0;
+         text-align: center;
+         margin-top: auto;
+         animation: slideUp 0.8s ease-out;
+      }
+
+      @keyframes slideUp {
+         from {
+            transform: translateY(50px);
+            opacity: 0;
+         }
+         to {
+            transform: translateY(0);
+            opacity: 1;
+         }
+      }
+
+      footer p {
+         color: #64748b;
+         margin-bottom: 10px;
+      }
+
+      footer a {
+         color: #2563eb;
+         text-decoration: none;
+         transition: color 0.3s ease;
+      }
+
+      footer a:hover {
+         text-decoration: underline;
+         color: #1d4ed8;
+      }
+
+      /* Scroll animations */
+      .fade-in-on-scroll {
+         opacity: 0;
+         transform: translateY(30px);
+         transition: all 0.6s ease;
+      }
+
+      .fade-in-on-scroll.visible {
+         opacity: 1;
+         transform: translateY(0);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+         .nav-menu {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            background: white;
+            flex-direction: column;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+         }
+
+         .nav-menu.active {
+            left: 0;
+         }
+
+         .menu-toggle {
+            display: flex;
+         }
+
+         .page-title {
+            font-size: 32px;
+         }
+
+         .page-subtitle {
+            font-size: 18px;
+         }
+
+         .step-item {
+            flex-direction: column;
+            text-align: center;
+         }
+
+         .step-number {
+            align-self: center;
+         }
+
+         .section-content {
+            padding: 20px;
+         }
+
+         .example-table {
+            font-size: 12px;
+         }
+
+         .example-table th,
+         .example-table td {
+            padding: 8px 6px;
+         }
+      }
+
+      @media (max-width: 480px) {
+         .formula-text {
+            font-size: 14px;
+         }
+
+         .example-table {
+            font-size: 10px;
+         }
+      }
+
+      /* Preloader */
+      .preloader {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         z-index: 9999;
+         animation: fadeOut 0.5s ease-out 2s forwards;
+      }
+
+      .preloader-content {
+         text-align: center;
+         color: white;
+      }
+
+      .preloader-spinner {
+         width: 60px;
+         height: 60px;
+         border: 4px solid rgba(255,255,255,0.3);
+         border-top: 4px solid white;
+         border-radius: 50%;
+         animation: spin 1s linear infinite;
+         margin: 0 auto 20px;
+      }
+
+      @keyframes spin {
+         0% { transform: rotate(0deg); }
+         100% { transform: rotate(360deg); }
+      }
+
+      @keyframes fadeOut {
+         to {
+            opacity: 0;
+            visibility: hidden;
+         }
+      }
+   </style>
+</head>
+
+<body>
+   <!-- Preloader -->
+  <!--<div class="preloader">
+      <div class="preloader-content">
+         <div class="preloader-spinner"></div>
+         <h3>Loading SPKlinik...</h3>
+      </div>
+   </div> -->
+
+   <!-- Header -->
+   <header>
+      <div class="container">
+         <nav>
+            <a href="#" class="logo">
+               <!--<div class="logo-icon">SP</div>-->
+               SPKlinik
+            </a>
+            <ul class="nav-menu">
+               <li><a href="home.html">Beranda</a></li>
+               <li><a href="home.html">Tentang</a></li>
+               <li><a href="home.html">Tim</a></li>
+               <li><a href="home.html">FAQ</a></li>
+               <li><a href="how-to-use.html">How To Use</a></li>
+            </ul>
+            <div class="menu-toggle">
+               <span></span>
+               <span></span>
+               <span></span>
+            </div>
+         </nav>
+      </div>
+   </header>
+
+   <!-- Main Content -->
+   <main class="main-content">
+      <div class="container">
+         <!-- Page Header -->
+         <div class="page-header">
+            <h1 class="page-title">Cara Menggunakan SPKlinik</h1>
+            <p class="page-subtitle">Panduan lengkap penggunaan sistem pendukung keputusan pemilihan klinik terbaik menggunakan metode COPRAS (Complex Proportional Assessment)</p>
+         </div>
+
+         <!-- Langkah Penggunaan -->
+         <div class="content-section">
+            <div class="section-card">
+               <div class="section-header">
+                  <h2>📋 Langkah-Langkah Penggunaan</h2>
+               </div>
+               <div class="section-content">
+                  <div class="steps-container">
+                     <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                           <h3>Kelola Kriteria & Bobot</h3>
+                           <p>Tentukan kriteria penilaian klinik seperti biaya, fasilitas, lokasi, dan kualitas pelayanan. Atur bobot untuk setiap kriteria dengan total bobot = 1.00</p>
+                        </div>
+                     </div>
+                     <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                           <h3>Input Data Klinik</h3>
+                           <p>Masukkan data alternatif klinik yang akan dinilai beserta nilai untuk setiap kriteria yang telah ditentukan</p>
+                        </div>
+                     </div>
+                     <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                           <h3>Proses Perhitungan COPRAS</h3>
+                           <p>Sistem akan otomatis menghitung menggunakan metode COPRAS untuk menentukan klinik terbaik berdasarkan kriteria dan bobot yang telah ditetapkan</p>
+                        </div>
+                     </div>
+                     <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                           <h3>Lihat Hasil & Ranking</h3>
+                           <p>Dapatkan hasil perankingan klinik terbaik dengan skor prioritas dan persentase untuk membantu pengambilan keputusan</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Metode COPRAS -->
+         <div class="content-section">
+            <div class="section-card">
+               <div class="section-header">
+                  <h2>🔬 Metode COPRAS (Complex Proportional Assessment)</h2>
+               </div>
+               <div class="section-content">
+                  <p>COPRAS adalah metode pengambilan keputusan multi-kriteria yang mengevaluasi alternatif berdasarkan kriteria benefit (menguntungkan) dan cost (merugikan).</p>
+                  
+                  <div class="highlight-box">
+                     <h4>Keunggulan Metode COPRAS</h4>
+                     <p>• Mempertimbangkan kriteria benefit dan cost secara terpisah<br>
+                        • Memberikan hasil yang objektif dan terukur<br>
+                        • Mudah dipahami dan diimplementasikan<br>
+                        • Cocok untuk berbagai jenis pengambilan keputusan</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Tahapan Perhitungan -->
+         <div class="content-section">
+            <div class="section-card">
+               <div class="section-header">
+                  <h2>📊 Tahapan Perhitungan COPRAS</h2>
+               </div>
+               <div class="section-content">
+                  
+                  <!-- Langkah 1 -->
+                  <h3 style="color: #1e293b; font-weight: 600; margin-bottom: 15px;">Langkah 1: Normalisasi Matriks Keputusan</h3>
+                  <p>Normalisasi dilakukan untuk menyamakan satuan pada setiap kriteria.</p>
+                  
+                  <div class="formula-card">
+                     <div class="formula-title">Rumus Normalisasi:</div>
+                     <div class="formula-text">r<sub>ij</sub> = x<sub>ij</sub> / Σx<sub>ij</sub></div>
+                     <div class="formula-description">
+                        Dimana:<br>
+                        • r<sub>ij</sub> = nilai normalisasi alternatif ke-i pada kriteria ke-j<br>
+                        • x<sub>ij</sub> = nilai alternatif ke-i pada kriteria ke-j<br>
+                        • Σx<sub>ij</sub> = jumlah semua nilai pada kriteria ke-j
+                     </div>
+                  </div>
+
+                  <div class="example-card">
+                     <div class="example-title">Contoh Normalisasi</div>
+                     <p><strong>Data Awal Klinik (Kriteria: Biaya dalam ribuan rupiah):</strong></p>
+                     <table class="example-table">
+                        <thead>
+                           <tr>
+                              <th>Klinik</th>
+                              <th>Biaya (ribu)</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>Klinik A</td>
+                              <td>100</td>
+                           </tr>
+                           <tr>
+                              <td>Klinik B</td>
+                              <td>150</td>
+                           </tr>
+                           <tr>
+                              <td>Klinik C</td>
+                              <td>200</td>
+                           </tr>
+                           <tr>
+                              <td><strong>Total</strong></td>
+                              <td><strong>450</strong></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <p><strong>Hasil Normalisasi:</strong></p>
+                     <table class="example-table">
+                        <thead>
+                           <tr>
+                              <th>Klinik</th>
+                              <th>Perhitungan</th>
+                              <th>Hasil Normalisasi</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>Klinik A</td>
+                              <td>100/450</td>
+                              <td>0.222</td>
+                           </tr>
+                           <tr>
+                              <td>Klinik B</td>
+                              <td>150/450</td>
+                              <td>0.333</td>
+                           </tr>
+                           <tr>
+                              <td>Klinik C</td>
+                              <td>200/450</td>
+                              <td>0.444</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+
+                  <!-- Langkah 2 -->
+                  <h3 style="color: #1e293b; font-weight: 600; margin-bottom: 15px; margin-top: 30px;">Langkah 2: Perhitungan Bobot Ternormalisasi</h3>
+                  <p>Mengalikan hasil normalisasi dengan bobot kriteria.</p>
+                  
+                  <div class="formula-card">
+                     <div class="formula-title">Rumus Bobot Ternormalisasi:</div>
+                     <div class="formula-text">d<sub>ij</sub> = r<sub>ij</sub> × w<sub>j</sub></div>
+                     <div class="formula-description">
+                        Dimana:<br>
+                        • d<sub>ij</sub> = nilai bobot ternormalisasi<br>
+                        • r<sub>ij</sub> = nilai normalisasi<br>
+                        • w<sub>j</sub> = bobot kriteria ke-j
+                     </div>
+                  </div>
+
+                  <div class="example-card">
+                     <div class="example-title">Contoh Bobot Ternormalisasi</div>
+                     <p><strong>Jika bobot kriteria biaya = 0.3, maka:</strong></p>
+                     <table class="example-table">
+                        <thead>
+                           <tr>
+                              <th>Klinik</th>
+                              <th>Normalisasi</th>
+                              <th>Bobot</th>
+                              <th>Bobot Ternormalisasi</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>Klinik A</td>
+                              <td>0.222</td>
+                              <td>0.3</td>
+                              <td>0.067</td>
+                           </tr>
+                           <tr>
+                              <td>Klinik B</td>
+                              <td>0.333</td>
+                              <td>0.3</td>
+                              <td>0.100</td>
+                           </tr>
+                           <tr>
+                              <td>Klinik C</td>
+                              <td>0.444</td>
+                              <td>0.3</td>
+                              <td>0.133</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+
+                  <!-- Langkah 3 -->
+                  <h3 style="color: #1e293b; font-weight: 600; margin-bottom: 15px; margin-top: 30px;">Langkah 3: Menghitung S<sub>+i</sub> dan S<sub>-i</sub></h3>
+                  <p>Memisahkan dan menjumlahkan kriteria benefit dan cost.</p>
+                  
+                  <div class="formula-card">
+                     <div class="formula-title">Rumus S<sub>+i</sub> dan S<sub>-i</sub>:</div>
+                     <div class="formula-text">
+                        S<sub>+i</sub> = Σd<sub>ij</sub> (untuk kriteria benefit)<br>
+                        S<sub>-i</sub> = Σd<sub>ij</sub> (untuk kriteria cost)
+                     </div>
+                     <div class="formula-description">
+                        • S<sub>+i</sub> = jumlah bobot ternormalisasi kriteria benefit<br>
+                        • S<sub>-i</sub> = jumlah bobot ternormalisasi kriteria cost
+                     </div>
+                  </div>
+
+                  <!-- Langkah 4 -->
+                  <h3 style="color: #1e293b; font-weight: 600; margin-bottom: 15px; margin-top: 30px;">Langkah 4: Menghitung Nilai Prioritas Relatif (Q<sub>i</sub>)</h3>
+                  <p>Menghitung skor akhir untuk setiap alternatif.</p>
+                  
+                  <div class="formula-card">
+                     <div class="formula-title">Rumus Prioritas Relatif:</div>
+                     <div class="formula-text">Q<sub>i</sub> = S<sub>+i</sub> + (S<sub>-min</sub> × ΣS<sub>-i</sub>) / (S<sub>-i</sub> × ΣS<sub>-min</sub>)</div>
+                     <div class="formula-description">
+                        Dimana:<br>
+                        • Q<sub>i</sub> = nilai prioritas relatif alternatif ke-i<br>
+                        • S<sub>-min</sub> = nilai S<sub>-i</sub> terkecil<br>
+                        • ΣS<sub>-i</sub> = jumlah semua S<sub>-i</sub><br>
+                        • ΣS<sub>-min</sub> = jumlah S<sub>-min</sub> untuk semua alternatif
+                     </div>
+                  </div>
+
+                  <!-- Langkah 5 -->
+                  <h3 style="color: #1e293b; font-weight: 600; margin-bottom: 15px; margin-top: 30px;">Langkah 5: Menghitung Bobot Kepentingan (P<sub>i</sub>)</h3>
+                  <p>Mengkonversi nilai prioritas menjadi persentase.</p>
+                  
+                  <div class="formula-card">
+                     <div class="formula-title">Rumus Bobot Kepentingan:</div>
+                     <div class="formula-text">P<sub>i</sub> = (Q<sub>i</sub> / Q<sub>max</sub>) × 100%</div>
+                     <div class="formula-description">
+                        Dimana:<br>
+                        • P<sub>i</sub> = bobot kepentingan alternatif ke-i<br>
+                        • Q<sub>max</sub> = nilai Q<sub>i</sub> tertinggi
+                     </div>
+                  </div>
+
+                  <div class="example-card">
+                     <div class="example-title">Contoh Hasil Akhir</div>
+                     <table class="example-table">
+                        <thead>
+                           <tr>
+                              <th>Ranking</th>
+                              <th>Klinik</th>
+                              <th>Nilai Q<sub>i</sub></th>
+                              <th>Bobot P<sub>i</sub> (%)</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr style="background: #dcfce7;">
+                              <td><strong>1</strong></td>
+                              <td><strong>Klinik A</strong></td>
+                              <td><strong>0.845</strong></td>
+                              <td><strong>100%</strong></td>
+                           </tr>
+                           <tr>
+                              <td>2</td>
+                              <td>Klinik C</td>
+                              <td>0.723</td>
+                              <td>85.6%</td>
+                           </tr>
+                           <tr>
+                              <td>3</td>
+                              <td>Klinik B</td>
+                              <td>0.654</td>
+                              <td>77.4%</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <p><strong>Kesimpulan:</strong> Klinik A merupakan pilihan terbaik dengan skor prioritas tertinggi.</p>
+                  </div>
+
+                  <div class="highlight-box">
+                     <h4>Tips Penggunaan</h4>
+                     <p>• Pastikan total bobot kriteria = 1.00<br>
+                        • Pilih tipe kriteria dengan benar (Benefit/Cost)<br>
+                        • Masukkan data klinik yang akurat<br>
+                        • Semakin tinggi nilai Q<sub>i</sub>, semakin baik alternatif tersebut</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Action Buttons -->
+         <div class="button-group">
+   <a href="#" class="btn btn-primary" onclick="konfirmasiNavigasi(event)">
+      🚀 Mulai Menggunakan Sistem
+   </a>
+</div>
+
+<script>
+function konfirmasiNavigasi(event) {
+   event.preventDefault(); // Cegah langsung pindah halaman
+
+   const konfirmasi = confirm("Apakah Anda yakin untuk menggunakan sistem? atau, ingin memahami terlebih dahulu?");
+
+   if (konfirmasi) {
+      // Jika yakin, lanjut ke halaman
+      window.location.href = 'pilihKriteria.html';
+   }
+   // Jika tidak, tidak terjadi apa-apa
+}
+</script>
+
+      </div>
+   </main>

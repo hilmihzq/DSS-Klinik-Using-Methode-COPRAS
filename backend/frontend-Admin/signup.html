@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Signup Page</title>
+  <link rel="stylesheet" href="../css/sign.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="signup-section">
+      <div class="signup-box">
+        <h2>Buat Akun Baru</h2>
+        <p>Daftar untuk membuat akun baru dan mulai menggunakan layanan kami.</p>
+        <form id="signupForm">
+          <input type="text" name="fullname" placeholder="Nama Lengkap" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Password" required />
+          <input type="password" name="confirm_password" placeholder="Konfirmasi Password" required />
+
+          <div class="options">
+            <label>
+              <input type="checkbox" name="terms" required />
+              Saya setuju dengan <a href="#">Syarat & Ketentuan</a>
+            </label>
+          </div>
+
+          <button type="submit">Daftar</button>
+        </form>
+
+        <div class="login-link">
+          Sudah punya akun? <a href="login.html">Masuk di sini</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="image-section"></div>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const fullname = document.querySelector('[name="fullname"]').value;
+      const email = document.querySelector('[name="email"]').value;
+      const password = document.querySelector('[name="password"]').value;
+      const confirmPassword = document.querySelector('[name="confirm_password"]').value;
+      const termsChecked = document.querySelector('[name="terms"]').checked;
+
+      if (!termsChecked) {
+        alert("Anda harus menyetujui syarat & ketentuan.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert("Konfirmasi password tidak cocok.");
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:3000/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullname, email, password })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          alert(data.message);
+          window.location.href = "login.html";
+        } else {
+          alert(data.message || "Terjadi kesalahan.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Gagal terhubung ke server.");
+      }
+    });
+  </script>
+</body>
+</html>
