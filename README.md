@@ -1,31 +1,35 @@
 # 🏥 DSS-Klinik-Using-Methode-COPRAS
 
-Sistem Pendukung Keputusan (SPK) berbasis web untuk membantu menentukan **klinik terbaik** menggunakan metode **COPRAS (Complex Proportional Assessment)**. Aplikasi ini dirancang dengan **arsitektur dua backend** untuk memisahkan pengelolaan antarmuka dan logika perhitungan SPK.
+Sistem Pendukung Keputusan (SPK) **berbasis web** yang dirancang untuk membantu menentukan **klinik terbaik** dengan menggunakan metode **COPRAS (Complex Proportional Assessment)**.
+
+🔗 Proyek ini menggabungkan kekuatan **Node.js** dan **Python Flask** dalam satu sistem terintegrasi yang cerdas dan fleksibel. Sangat cocok untuk kamu yang tertarik di bidang **AI, Data Decision Making, dan Web Development**.
 
 ---
 
-## 🔧 Teknologi yang Digunakan
+## 🚀 Fitur Unggulan
 
-| Layer         | Teknologi     |
-|---------------|----------------|
-| Frontend      | Node.js + Express |
-| Backend 1     | Node.js         |
-| Backend 2     | Python Flask (Metode COPRAS) |
-| Container     | Docker, Docker Compose |
-| Package Mgmt  | NPM, pip       |
-
----
-
-## 🚀 Fitur Utama
-
-- 💡 Implementasi metode COPRAS untuk pengambilan keputusan klinik terbaik.
-- 📊 Visualisasi hasil ranking dan analisis alternatif.
-- 🔌 Integrasi antara Node.js & Python Flask.
-- 🐳 Deploy otomatis via Docker Compose.
+- 💡 **Implementasi metode COPRAS** untuk mendukung keputusan klinik secara objektif.
+- 🧠 **Arsitektur dua backend** (Node.js & Python Flask) yang efisien dan scalable.
+- 📊 **Hasil ranking otomatis** dari input data klinik dan kriteria.
+- 🔌 **Integrasi API antar teknologi** dengan komunikasi JSON.
+- 🐳 **Mudah dijalankan dengan Docker Compose** hanya dalam satu perintah.
+- 📱 Siap dikembangkan lebih lanjut dengan UI modern berbasis React atau Vue (opsional).
 
 ---
 
-## 🧱 Struktur Proyek
+## 🧰 Teknologi yang Digunakan
+
+| Layer         | Teknologi                |
+|---------------|--------------------------|
+| Frontend      | Node.js + Express        |
+| Backend 1     | Node.js                  |
+| Backend 2     | Python Flask (COPRAS)    |
+| Container     | Docker, Docker Compose   |
+| Package Mgmt  | NPM, pip                 |
+
+---
+
+## 📁 Struktur Proyek
 
 ```text
 spk-klinik-copras/
@@ -45,6 +49,3 @@ spk-klinik-copras/
 │
 ├── docker-compose.yml               # Orkestrasi layanan dengan Docker (opsional)
 └── README.md                        # Dokumentasi proyek
-
-
-
