@@ -25,7 +25,7 @@ Sistem Pendukung Keputusan (SPK) berbasis web untuk membantu menentukan **klinik
 
 ---
 
-## 📁 Struktur Proyek
+## 🧱 Struktur Proyek
 
 ```text
 spk-klinik-copras/
