@@ -29,20 +29,20 @@ Sistem Pendukung Keputusan (SPK) berbasis web untuk membantu menentukan **klinik
 
 spk-klinik-copras/
 ├── backend-node/
-│   ├── index.js                       # Entry point aplikasi Node.js
-│   ├── routes/
-│   │   └── coprasRoutes.js           # Routing API
-│   ├── controllers/
-│   │   └── coprasController.js       # Logika pemrosesan & integrasi ke Flask
-│   ├── models/                       # (Kosong, untuk skema data jika diperlukan)
-│   └── utils/                        # (Kosong, untuk helper atau konfigurasi)
+│ ├── index.js # Entry point aplikasi Node.js
+│ ├── routes/
+│ │ └── coprasRoutes.js # Routing API
+│ ├── controllers/
+│ │ └── coprasController.js # Logika pemrosesan & integrasi ke Flask
+│ ├── models/ # (Kosong, untuk skema data jika diperlukan)
+│ └── utils/ # (Kosong, untuk helper atau konfigurasi)
 │
 ├── backend-flask/
-│   ├── app.py                        # Entry point Flask
-│   ├── copras.py                     # Logika perhitungan COPRAS
-│   └── requirements.txt              # Dependensi Flask
+│ ├── app.py # Entry point Flask
+│ ├── copras.py # Logika perhitungan COPRAS
+│ └── requirements.txt # Dependensi Flask
 │
-├── docker-compose.yml               # (Akan dibuat jika kamu butuh nanti)
-└── README.md                        # (Sudah saya bantu konsepkan sebelumnya)
+├── docker-compose.yml # Orkestrasi layanan dengan Docker (opsional)
+└── README.md # Dokumentasi proyek
 
 
