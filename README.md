@@ -2,7 +2,7 @@
 
 Sistem Pendukung Keputusan (SPK) **berbasis web** yang dirancang untuk membantu menentukan **klinik terbaik** dengan menggunakan metode **COPRAS (Complex Proportional Assessment)**.
 
-🔗 Proyek ini menggabungkan kekuatan **Node.js** dan **Python Flask** dalam satu sistem terintegrasi yang cerdas dan fleksibel. Sangat cocok untuk kamu yang tertarik di bidang **AI, Data Decision Making, dan Web Development**.
+🔗 Proyek ini menggabungkan dua backend sekaligus yaitu **Node.js** dan **Python Flask** dalam satu sistem terintegrasi yang cerdas dan fleksibel. Sangat cocok untuk kamu yang tertarik di bidang **AI, Data Decision Making, dan Web Development**.
 
 ---
 
